@@ -241,7 +241,7 @@ async function init() {
   new ResizeObserver(resize).observe(hero);
 
   let visible = true, raf = 0, last = performance.now(), acc = 0, frames = 0;
-  new IntersectionObserver((en) => { visible = en[0].isIntersecting; if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }, { threshold: 0.02 }).observe(hero);
+  new IntersectionObserver((en) => { visible = en[en.length - 1].isIntersecting; if (visible && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }, { threshold: 0.02 }).observe(hero);
   function frame(now) {
     raf = 0;
     acc += Math.min(0.3, (now - last) / 1000); last = now;
