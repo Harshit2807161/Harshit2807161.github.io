@@ -135,8 +135,25 @@ async function init() {
   for (const rope of [ropeL, ropeR]) for (let i = 0; i < rope.length - 1; i++) link(rope[i], rope[i + 1]);
   link(J, H);
   for (let i = 0; i < cluster.length; i++) for (let k = i + 1; k < cluster.length; k++) link(cluster[i], cluster[k]);
-  // a little extra stiffness across the card
   const centerOf = (out) => out.copy(TL.p).add(TR.p).add(BL.p).add(BR.p).multiplyScalar(0.25);
+
+  // easter egg: pull the card past the straps' reach and they flush red with the strain, cooling off once let go
+  const strapC = C.slice(0, 2 * UNIT.ropeSegments + 1);   // the two straps and the clip link, in creation order
+  const strapBase = strapMat.color.clone(), strapHot = new THREE.Color(0xd41f2f);
+  let heat = 0;
+  function strain() {
+    let over = 0, rest = 0;
+    for (const c of strapC) { over += Math.max(0, c.a.p.distanceTo(c.b.p) - c.rest); rest += c.rest; }
+    return over / rest;
+  }
+  function updateHeat() {
+    const target = THREE.MathUtils.smoothstep(strain(), 0.02, 0.55);
+    heat += (target - heat) * (target > heat ? 0.3 : 0.05);   // flushes quickly, cools slowly
+    if (heat < 0.001) heat = 0;
+    const t = Math.pow(heat, 1.6);                             // perceptual: dark red-brown first, full red only when really hauled on
+    strapMat.color.copy(strapBase).lerp(strapHot, t);
+    strapMat.emissive.setRGB(0.07 * t, 0.004 * t, 0.004 * t);
+  }
 
   if (!reduceMotion) { // hang it slightly off to the side so it swings into place on load
     for (const q of cluster) { q.p.x += 7; q.pp.x += 7; }
@@ -246,7 +263,7 @@ async function init() {
     raf = 0;
     acc += Math.min(0.3, (now - last) / 1000); last = now;
     while (acc >= DT) { step(DT); acc -= DT; }
-    updateCard(); updateRibbon(ribbonL, ropeL); updateRibbon(ribbonR, ropeR);
+    updateHeat(); updateCard(); updateRibbon(ribbonL, ropeL); updateRibbon(ribbonR, ropeR);
     renderer.render(scene, camera); frames++;
     if (!hero.classList.contains('live')) { hero.classList.add('live'); requestAnimationFrame(() => hero.classList.add('shown')); }
     if (visible) raf = requestAnimationFrame(frame);
