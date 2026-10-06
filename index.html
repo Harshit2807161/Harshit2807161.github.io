@@ -1,709 +1,721 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harshit Dhankhar</title>
+<meta name="description" content="Harshit Dhankhar — MS Computer Science @ UC San Diego. I like researching and building self-learning systems.">
+<meta name="author" content="Harshit Dhankhar">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231400ff'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia,serif' font-size='40' fill='white'%3EH%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#fafafa">
+<link rel="canonical" href="https://harshit2807161.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Harshit Dhankhar">
+<meta property="og:description" content="MS Computer Science @ UC San Diego. I like researching and building self-learning systems.">
+<meta property="og:url" content="https://harshit2807161.github.io/">
+<meta property="og:image" content="https://harshit2807161.github.io/images/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens ---------- */
+:root{
+  color:#080808;
+  font-synthesis:none;
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --page-gutter:clamp(32px,8vw,128px);
+  --blue:#1400ff;
+  --ink:#080808;
+  --muted:#6f6c78;
+  background:#fafafa;
+  font-family:Gelasio,Georgia,"Times New Roman",serif;
+  font-weight:500;
+  -webkit-font-smoothing:antialiased;
+}
+*{box-sizing:border-box}
+body{margin:0}
+h1,h2,h3,h4,p{margin:0;font-weight:500}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+::selection{background:#dcd1ff}
+a:focus-visible{outline-offset:8px;outline:2px solid #7950ef}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+img{display:block}
 
-    <title>Harshit Dhankhar</title>
-    
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+/* ---------- skip link ---------- */
+.skip{z-index:10;background:#fff;padding:12px;position:fixed;top:16px;left:16px;transform:translateY(-200%)}
+.skip:focus{transform:none}
 
-    <meta name="author" content="Harshit Dhankhar">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="Description" content="Harshit Dhankhar | UCSD MSCS '27 | IIT Patna MnC '25">
-    <meta name="keywords" content="Harshit Dhankhar, AI, ML, ........">
+/* ---------- hero ---------- */
+.hero{background:#fff;width:100%;height:100vh;position:relative;overflow:hidden}
+.intro,.education{letter-spacing:-.02em;z-index:3;pointer-events:none;font-size:1rem;line-height:1.25;position:absolute;top:100px}
+.intro{left:var(--page-gutter)}
+.education{right:var(--page-gutter);text-align:right}
+.more{pointer-events:auto;color:var(--muted);font:inherit;text-underline-offset:3px;cursor:pointer;background:0 0;border:0;padding:0;text-decoration:underline;text-decoration-thickness:1px;transition:color .15s}
+.more:hover{color:var(--ink)}
+.more:focus-visible{outline-offset:3px;border-radius:2px;outline:2px solid #7950ef}
 
-    <link rel="icon" type="image/png" href="">
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
+/* ---------- badge (CSS/SVG stand-in for the three.js lanyard) ---------- */
+.badge{z-index:2;position:absolute;inset:0;container-type:size;pointer-events:none}
+.rig{
+  position:absolute;top:0;left:50%;width:0;height:100%;
+  transform-origin:50% -40cqh;            /* swing about a point above the viewport, like a neck */
+  animation:sway 7.5s ease-in-out infinite alternate;
+}
+@keyframes sway{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
+@media (prefers-reduced-motion:reduce){.rig{animation:none}}
+
+.strap{
+  position:absolute;left:50%;top:0;width:2.5cqh;height:36cqh;margin-left:-1.25cqh;
+  background:linear-gradient(90deg,#33352f 0%,#222420 38%,#2a2c27 62%,#3a3c37 100%);
+  transform-origin:50% 100%;
+  border-radius:0 0 .25cqh .25cqh;
+  filter:drop-shadow(1.6cqh 1.2cqh 1.1cqh rgba(0,0,0,.14));
+}
+.strap.l,.strap.r{top:-18cqh;height:40cqh;transform-origin:50% 100%}
+.strap.l{transform:rotate(-24deg)}
+.strap.r{transform:rotate(24deg)}
+/* the two straps meet at 23.2cqh; a short vertical piece continues into the ring */
+.strap.v{top:21.2cqh;height:4cqh;transform:none;border-radius:0 0 .3cqh .3cqh}
+.stitch{position:absolute;left:50%;top:21.9cqh;width:1.7cqh;height:.6cqh;margin-left:-.85cqh;
+  background:radial-gradient(circle,#a7a9a3 32%,transparent 36%) 0 0/ .375cqh .3cqh;opacity:.9}
+
+.clip{position:absolute;left:50%;top:24.1cqh;width:5.6cqh;height:16cqh;margin-left:-2.8cqh;z-index:1;filter:drop-shadow(.7cqh .6cqh .5cqh rgba(0,0,0,.18))}
+
+.holder{
+  position:absolute;left:50%;top:32.6cqh;width:35cqh;height:59.5cqh;margin-left:-17.5cqh;
+  border-radius:1.8cqh;
+  background:linear-gradient(180deg,rgba(236,236,236,.92),rgba(228,228,228,.9) 14%,rgba(240,240,240,.85) 15%,rgba(226,226,226,.88));
+  box-shadow:
+    0 0 0 .12cqh rgba(0,0,0,.08),
+    inset 0 .1cqh .2cqh rgba(255,255,255,.9),
+    inset 0 -.15cqh .25cqh rgba(0,0,0,.05),
+    4.2cqh 1.9cqh 4.2cqh rgba(0,0,0,.16),
+    1.2cqh 1cqh 1.4cqh rgba(0,0,0,.05);
+}
+.holder::after{ /* plastic sheen */
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    linear-gradient(112deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.55) 44%,rgba(255,255,255,0) 52%),
+    linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,0) 20%);
+  mix-blend-mode:screen;
+}
+.slot{position:absolute;left:50%;top:3.4cqh;width:7.7cqh;height:1.75cqh;margin-left:-3.85cqh;border-radius:999px;
+  background:rgba(255,255,255,.8);box-shadow:inset 0 .12cqh .25cqh rgba(0,0,0,.18),0 .05cqh 0 rgba(255,255,255,.9)}
+.hole{position:absolute;top:3.05cqh;width:2.45cqh;height:2.45cqh;border-radius:50%;background:#fff;
+  box-shadow:inset 0 .12cqh .25cqh rgba(0,0,0,.18),0 .05cqh 0 rgba(255,255,255,.9)}
+.hole.l{left:2.9cqh}.hole.r{right:2.9cqh}
+.seam{position:absolute;left:.6cqh;right:.6cqh;top:7.75cqh;height:.85cqh;
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.14) 0 .07cqh,rgba(255,255,255,.7) .07cqh .17cqh,transparent .17cqh .35cqh)}
+.seam::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle,#fff 0 .09cqh,transparent .1cqh) 0 .1cqh/2.3cqh .35cqh,
+             radial-gradient(circle,#fff 0 .08cqh,transparent .09cqh) 1.1cqh .4cqh/3.1cqh .35cqh;opacity:.9}
+
+.card{
+  position:absolute;left:1cqh;right:1cqh;top:9.5cqh;bottom:2.3cqh;
+  background:#f7f7f6;border-radius:.55cqh;
+  box-shadow:0 0 0 .06cqh rgba(0,0,0,.06),inset 0 0 1.4cqh rgba(0,0,0,.035);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:3.8cqh 2cqh 3cqh 3.6cqh;overflow:hidden;
+}
+.card::before{ /* paper grain */
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.11;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.card .nm{font-size:5.6cqh;line-height:.8;letter-spacing:-.025em;margin-top:.6cqh;font-weight:600;width:max-content}
+.card .nm span{display:block}
+.card .nm .last{color:var(--blue)}
+.card .photo{width:15.5cqh;height:19.4cqh;border-radius:.7cqh;overflow:hidden;box-shadow:0 .12cqh .4cqh rgba(0,0,0,.18),0 0 0 .08cqh rgba(0,0,0,.06);background:#ddd;align-self:center;position:relative;z-index:1}
+.card .photo img{width:100%;height:100%;object-fit:cover;display:block}
+.card .meta{font-size:1.15cqh;line-height:1.3;letter-spacing:-.01em}
+.card .lbl{font-style:italic;font-weight:500;margin-bottom:.55cqh}
+.card .val{margin-bottom:1.6cqh}
+.chips{display:flex;flex-wrap:wrap;gap:.5cqh .5cqh}
+.chip{color:#fff;border-radius:999px;padding:.15cqh .7cqh .22cqh;font-size:1.05cqh;line-height:1.2;white-space:nowrap}
+.chip.k{background:#101010}.chip.r{background:#d7282f}.chip.p{background:#3b21c9}.chip.b{background:#1446d4}
+
+/* three.js layer: shown once the simulation has rendered its first frame */
+.badge3d{display:none;position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .6s ease}
+.badge3d canvas{width:100%;height:100%;display:block;touch-action:pan-y}
+.hero.live .badge{opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.hero.live .badge3d{display:block}
+.hero.live.shown .badge3d{opacity:1}
+/* mobile badge: same rig, slightly tilted like the reference */
+.mobile-hint{display:none}
+
+/* ---------- jump nav ---------- */
+.jump{position:absolute;top:150px;left:var(--page-gutter);z-index:3;display:flex;gap:18px;font-size:15px;letter-spacing:-.01em}
+.jump a{color:#6f6c78;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;transition:color .15s}
+.jump a:hover{color:var(--ink)}
+
+/* ---------- sections ---------- */
+.block{padding:96px 0 40px;scroll-margin-top:24px}
+.block + .block{padding-top:72px}
+.sec-head{padding:0 var(--page-gutter) 28px;display:flex;align-items:baseline;justify-content:space-between;gap:24px}
+.sec-head h2{font-size:48px;letter-spacing:-.02em;line-height:1.1;font-weight:500}
+.sec-head .kicker{color:#6f6c78;font-size:15px;letter-spacing:-.01em;max-width:46ch;text-align:right}
+.sub{padding:40px var(--page-gutter) 12px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#6b6873;font-weight:500}
+.sub:first-of-type{padding-top:8px}
+
+/* experience rows */
+.xp{display:grid;grid-template-columns:64px minmax(240px,320px) 1fr;gap:28px;padding:32px var(--page-gutter);border-top:1px solid #eaeaea;align-items:start}
+.xp:last-of-type{border-bottom:1px solid #eaeaea}
+.xp-logo{width:64px;height:64px;border-radius:12px;background:#fff;border:1px solid #ececec;display:grid;place-items:center;overflow:hidden}
+.xp-logo img{max-width:48px;max-height:44px;object-fit:contain}
+.xp h4{font-size:26px;letter-spacing:-.02em;line-height:1.15;font-weight:500}
+.xp .role{font-size:16px;margin-top:4px;letter-spacing:-.01em}
+.xp .meta{font-size:15px;color:#6b6873;margin-top:4px;font-variant-numeric:tabular-nums}
+.xp .adv{font-size:15px;color:#6b6873;margin-top:2px}
+.xp ul{margin:0;padding-left:18px;font-size:16px;line-height:1.42;letter-spacing:-.01em}
+.xp li+li{margin-top:8px}
+.xp li::marker{color:#9a98a4}
+
+/* list rows (publications + projects), based on the reference's project rows */
+.rows{--label-w:min(360px,calc(100vw - 2*var(--page-gutter) - 286px))}
+.rows.pubs{--label-w:min(600px,calc(100vw - 2*var(--page-gutter) - 286px))}
+.project{min-height:220px;padding:36px var(--page-gutter);isolation:isolate;border-top:1px solid #eaeaea;align-items:center;display:flex;position:relative}
+.rows .project:last-child{border-bottom:1px solid #eaeaea}
+.project::before{content:"";opacity:0;z-index:-1;background:#fff;transition:opacity .18s;position:absolute;inset:0}
+.project.active,.project:focus-within{z-index:10}
+.project.active::before,.project:focus-within::before{opacity:1}
+.label{width:var(--label-w);max-width:100%;position:relative}
+.copy{padding:8px 0;transition:opacity .18s,filter .18s}
+.project :is(h3,h4){letter-spacing:-.02em;margin-bottom:14px;font-size:36px;line-height:1.15;font-weight:500}
+.pubs .project h3{font-size:26px;line-height:1.25;margin-bottom:10px}
+.project p{letter-spacing:-.02em;font-size:16px;line-height:1.3}
+.project p+p{margin-top:10px}
+.date{color:#6f6c78}
+.authors{color:#5b5864}
+.authors b{color:var(--ink);font-weight:500}
+.links{margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px}
+.links a{color:var(--blue);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.links a:hover{color:var(--ink)}
+.links .private{color:#6f6c78}
+.status{display:inline-block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px 3px;margin-left:4px;vertical-align:middle}
+.status.review{background:#d7282f}
+.status.review-pending{background:#f3742b;color:var(--ink)}
+@media (hover:hover){
+  .rows.has-active .project:not(.active) .copy,.rows:focus-within .project:not(:focus-within) .copy{opacity:.35;filter:blur(4px)}
+}
+.previews{z-index:20;left:calc(var(--page-gutter) + var(--label-w) + 36px);top:50%;right:var(--page-gutter);pointer-events:none;height:190px;position:absolute;transform:translateY(-50%)}
+.preview{object-fit:contain;opacity:0;width:250px;height:190px;padding:8px;transition:transform .32s var(--ease-out),opacity .16s ease;background:#fff;border:1px solid #0000001a;border-radius:4px;position:absolute;transform:translateY(64px) rotate(0) scale(.95)}
+.preview.cover{object-fit:cover;padding:0;object-position:50% 0}
+.preview-0{top:0;right:calc(2*max(0px,min(225px,50% - 125px)))}
+.preview-1{top:8px;right:max(0px,min(225px,50% - 125px))}
+.preview-2{top:8px;right:0}
+.preview:only-child{top:4px;right:max(0px,min(225px,50% - 125px))}
+.project.active .preview,.project:focus-within .preview{opacity:1}
+.project.active .preview-0,.project:focus-within .preview-0{transform:translate(var(--mx,0px),var(--my,0px)) rotate(-8deg)}
+.project.active .preview-1,.project:focus-within .preview-1{transition-delay:35ms;transform:translate(calc(var(--mx,0px)*1.35),calc(var(--my,0px)*1.2)) rotate(10deg)}
+.project.active .preview-2,.project:focus-within .preview-2{transition-delay:70ms;transform:translate(calc(var(--mx,0px)*1.7),calc(var(--my,0px)*1.4)) rotate(-7.2deg)}
+@media (hover:none) and (min-width:701px){.preview-0{opacity:1;transform:translateY(0) rotate(-8deg)}}
+@supports not (width:1cqh){.badge{display:none}}
+html:has(dialog.about[open]){overflow:hidden}
+@media (prefers-reduced-motion:reduce){.preview{transition:opacity .16s;transform:none!important}.panel,dialog.about,.copy,.social-pill,.headshot img,.project::before{transition:none}}
+.cat{padding:44px var(--page-gutter) 14px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#6b6873;font-weight:500;display:flex;align-items:center;gap:12px}
+.cat::after{content:"";flex:1;height:1px;background:#eaeaea}
+.cat:first-child{padding-top:8px}
+
+/* ---------- footer ---------- */
+footer{padding:88px var(--page-gutter) 96px;background:#fff;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:64px;display:flex}
+footer h2{letter-spacing:-.02em;font-size:48px;font-weight:400;line-height:1.22}
+footer p{width:max-content;max-width:100%;padding-top:18px;font-size:16px;font-weight:400;line-height:1.55}
+.contact-line{white-space:nowrap;display:block}
+.social{white-space:nowrap;border-radius:999px;margin:-4px -3px;padding:4px 3px;line-height:1.2;text-decoration:none;display:inline-block;position:relative}
+.social-pill{color:#fff;pointer-events:none;transform-origin:50%;transition:transform .18s var(--ease-out),opacity .18s ease;border-radius:999px;padding:1px 9px 2px;display:inline-block}
+.linkedin{background:#1400ff}.github{background:#000}.scholar{background:#ec3293;color:var(--ink)}.email{background:#f3742b;color:var(--ink)}
+@media (hover:hover) and (pointer:fine){.social:hover .social-pill{opacity:.85;transform:scale(.95) rotate(-2deg)}}
+.colophon{flex-basis:100%;margin-top:-16px;font-size:13px;color:#6f6c78;font-weight:400;padding:0}
+
+/* ---------- about dialog ---------- */
+dialog.about{background:0 0;border:0;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;transition:background .4s;position:fixed;inset:0}
+dialog.about.shown{background:#0000001f}
+dialog.about::backdrop{background:0 0}
+.panel{overscroll-behavior:contain;width:min(520px,100vw);transition:transform .45s var(--ease-out);background:#fff;flex-direction:column;justify-content:space-between;gap:clamp(24px,4vh,40px);padding:clamp(32px,5vh,56px) 56px;font-weight:400;display:flex;position:absolute;top:0;bottom:0;left:0;overflow-y:auto;transform:translate(-100%)}
+.shown .panel{transform:none}
+.panel header{justify-content:space-between;align-items:flex-start;margin-bottom:32px;display:flex}
+.panel h2{letter-spacing:-.02em;font-size:48px;font-weight:400;line-height:1.1}
+.close{color:#080808;cursor:pointer;background:0 0;border:0;border-radius:999px;place-items:center;width:40px;height:40px;margin:2px -8px 0 0;padding:0;transition:background .15s;display:grid}
+.close:hover{background:#f2f1f4}
+.close:focus-visible{outline-offset:2px;outline:2px solid #7950ef}
+.bio p{color:#5b5864;text-wrap:pretty;font-size:16px;line-height:1.6}
+.bio p+p{margin-top:16px}
+.headshot{aspect-ratio:3/2;border-radius:4px;flex:0 auto;width:100%;min-height:160px;position:relative;overflow:hidden;box-shadow:0 1px 2px #0000000a,0 2px 8px #00000008}
+.headshot img{object-fit:cover;object-position:50% 42%;width:100%;height:100%;transition:filter .6s var(--ease-out);border-radius:4px;position:absolute;inset:0}
+@media (hover:hover) and (pointer:fine){.headshot:hover img{filter:brightness(1.05) saturate(1.05)}}
+.panel h3{margin:0 0 4px;font-size:16px;font-weight:500}
+.experience{margin:0;padding:0;list-style:none}
+.experience li{border-bottom:1px solid #eceaf0;grid-template-columns:118px 1fr auto;gap:14px;padding:14px 0;font-size:15px;line-height:1.4;display:grid}
+.experience .years{color:#6b6873;font-variant-numeric:tabular-nums}
+.experience .company{color:#080808}
+.experience .role{color:#6b6873;text-align:right}
+.toolbox{margin-top:12px;font-size:14px;line-height:1.5;color:#6b6873}
+.resume{display:inline-block;margin-top:14px;font-size:15px;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;color:#5b5864}
+.resume:hover{color:#080808}
+
+/* ---------- mobile ---------- */
+@media (max-width:700px){
+  .hero{height:100svh;min-height:700px}
+  .intro{top:44px;left:32px}
+  .education{top:108px;right:32px}
+  .badge{inset:196px 20px 32px;overflow:hidden}
+  .badge3d{display:none!important}
+  .hero.live .badge{opacity:1;visibility:visible}
+  .rig{animation:none;transform-origin:50% 0;transform:rotate(6deg) translateY(1%)}
+  .strap{filter:none}
+  .holder{box-shadow:0 0 0 .12cqh rgba(0,0,0,.08),2cqh 1.6cqh 2.6cqh rgba(0,0,0,.12)}
+  .jump{position:static;padding:0 32px;margin-top:0;flex-wrap:wrap;gap:12px 16px}
+  .hero .jump{position:absolute;top:168px;left:0;right:0}
+  .block{padding:56px 0 24px}
+  .sec-head{padding:0 24px 20px;flex-direction:column;align-items:flex-start;gap:8px}
+  .sec-head h2{font-size:34px}
+  .sec-head .kicker{text-align:left}
+  .sub,.cat{padding-left:24px;padding-right:24px}
+  .xp{grid-template-columns:48px 1fr;gap:16px 16px;padding:24px}
+  .xp-logo{width:48px;height:48px}.xp-logo img{max-width:36px;max-height:34px}
+  .xp ul{grid-column:1 / -1;padding-left:18px}
+  .xp h4{font-size:22px}
+  .project{min-height:0;padding:28px 24px;display:block}
+  .label{width:100%}
+  .project :is(h3,h4){margin-bottom:10px;font-size:30px}
+  .pubs .project h3{font-size:22px}
+  .previews{z-index:auto;height:auto;margin-top:20px;position:relative;inset:auto;transform:none}
+  .preview{object-fit:contain;opacity:1;width:100%;height:auto;max-height:260px;transition:none;display:none;position:static;transform:none!important}
+  .preview-0{display:block}
+  .rows.has-active .project:not(.active) .copy{opacity:1;filter:none}
+  footer{gap:32px;padding:56px 24px 64px}
+  footer h2{text-wrap:balance;max-width:100%;font-size:32px;line-height:1.2}
+  footer h2 br{display:none}
+  footer p{width:100%;padding-top:0}
+  .contact-line{white-space:normal;display:inline}
+  .colophon{margin-top:0}
+  .panel{gap:32px;padding:28px 24px 40px}
+  .panel h2{font-size:38px}
+  .experience li{grid-template-columns:84px 1fr auto;gap:12px;font-size:14px}
+}
+</style>
 </head>
-<body class="bg_colour">
-    <table border=0 class="bg_colour" style="width:100%;max-width:900px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-        <tr style="padding:0px">
-            <td style="padding:0px">
-                
-                <!-- Name tab -->
-                <table border=0 class="bg_colour" style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-                    
-                    
-                    <tr style="padding:0px">
-                        <td style="padding:2.5%;width:20%;max-width:20%">
-                            <a href="images/casual4.jpg">
-                                <img style="width:150px; border-radius: 20%;" alt="profile photo" src="images/casual4.jpg">
-                            </a>
-                        </td>
-                        <td style="padding:2.5%;width:60%;vertical-align:middle">
-                            <p style="text-align:center">
-                                <h1  style="text-align:center"><name>Harshit Dhankhar</name></h1>
-                            </p>
-                            <p style="text-align:center">
-                            &nbsp|&nbsp
-                            <a href="#news" onclick=Expand("news")>News</a>
-                            &nbsp|&nbsp
-                            <a href="#education" onclick=Expand("education")>Education</a>
-                            &nbsp|&nbsp
-                            <a href="#experience" onclick=Expand("experience")>Experience</a>
-                            &nbsp|&nbsp
-                            <a href="#publications" onclick=Expand("publications")>Publications</a>
-                            &nbsp|&nbsp
-                            <a href="#projects" onclick=Expand("projects")>Projects</a>
-                            &nbsp|&nbsp
-                            <a href="mailto:hdhankhar@ucsd.edu">Contact</a>
-                            &nbsp|&nbsp
-                            <!--a href="https://blog.amishmittal.com/">Blog</a-->
-                            </p>
-                        </td>
-                        <td style="padding:2.5%;width:10%;max-width:10%">
+<body>
+<a class="skip" href="#experience">Skip to content</a>
 
-                        </td>
-                    </tr>
+<main>
+  <section class="hero" aria-label="Introduction">
+    <p class="intro">I like researching and building<br>self-learning systems. <button type="button" class="more" aria-haspopup="dialog" id="moreBtn">[more]</button></p>
+    <nav class="jump" aria-label="Sections"><a href="#experience">Experience</a><a href="#publications">Publications</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="data/Resume.pdf" target="_blank" rel="noopener">Résumé ↗</a></nav>
+    <p class="education">Currently MS in Computer Science<br>&amp; RL research @ UC San Diego</p>
 
-                </tbody></table>
+    <h1 class="sr-only">Harshit Dhankhar</h1>
 
+    <!-- Lanyard + badge. Static CSS/SVG stand-in; to be replaced by the three.js rig. -->
+    <div class="badge" aria-hidden="true">
+      <div class="rig">
+        <div class="strap l"></div>
+        <div class="strap r"></div>
+        <div class="strap v"></div>
+        <div class="stitch"></div>
 
-                <!-- About section, quick links -->
+        <svg class="clip" viewBox="0 0 50 143" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#8e9094"/><stop offset=".28" stop-color="#f4f5f6"/><stop offset=".55" stop-color="#b9bbbf"/><stop offset=".8" stop-color="#e9eaec"/><stop offset="1" stop-color="#7d7f83"/>
+            </linearGradient>
+            <linearGradient id="metalV" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f1f2f3"/><stop offset=".5" stop-color="#a6a8ac"/><stop offset="1" stop-color="#d9dadc"/>
+            </linearGradient>
+          </defs>
+          <!-- D-ring: flat top where the strap passes, round bottom -->
+          <path fill-rule="evenodd" fill="url(#metal)" d="M6 0h38a6 6 0 0 1 6 6v12a14 14 0 0 1-14 14H14A14 14 0 0 1 0 18V6a6 6 0 0 1 6-6Zm6 5a4 4 0 0 0-4 4v8a10 10 0 0 0 10 10h14a10 10 0 0 0 10-10V9a4 4 0 0 0-4-4H12Z"/>
+          <!-- eyelet + swivel barrel -->
+          <rect x="21" y="30" width="8" height="9" rx="2" fill="url(#metal)"/>
+          <rect x="16.5" y="37" width="17" height="13" rx="3.5" fill="url(#metal)"/>
+          <rect x="19" y="39.5" width="12" height="1.6" rx=".8" fill="#fff" opacity=".75"/>
+          <!-- snap hook body with gate -->
+          <path fill="url(#metal)" d="M18.5 49h13v56a6.5 6.5 0 0 1-13 0V49Z"/>
+          <path fill="url(#metalV)" d="M19.3 60h4v30h-4z" opacity=".9"/>
+          <path d="M23.4 60 24.6 94" stroke="#6d6f73" stroke-width="1"/>
+          <!-- lower tip passing through the slot, seen through the sleeve -->
+          <path fill="url(#metal)" d="M20.5 104h9v34a4.5 4.5 0 0 1-9 0v-34Z" opacity=".7"/>
+        </svg>
 
-                <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-                    <tr style="padding:0px">
-                        <td style="padding:2.5%;width:63%;vertical-align:middle">
-                            <p>Hey there, I am a first year Master's student in Computer Science and Engineering (AI concentration) at the <a href="https://ucsd.edu" target="_blank">University of California San Diego (UCSD)</a>. I graduated with a Bachelor's degree in Mathematics and Computing from the <a href="https://www.iitp.ac.in" target="_blank">Indian Institute of Technology (IIT), Patna</a> in May 2025.</p>
+        <div class="holder">
+          <div class="slot"></div>
+          <div class="hole l"></div>
+          <div class="hole r"></div>
+          <div class="seam"></div>
+          <div class="card">
+            <div class="nm"><span class="first">Harshit</span><span class="last">Dhankhar</span></div>
+            <div class="photo"><img src="images/badge-photo.jpg" alt="" width="384" height="480"></div>
+            <div class="meta">
+              <div class="lbl">Currently</div>
+              <div class="val">MS Computer Science @ UC San Diego</div>
+              <div class="lbl">Previously</div>
+              <div class="chips">
+                <span class="chip k">AWS</span>
+                <span class="chip r">AnyFeast</span>
+                <span class="chip p">PSL Dauphine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="badge3d"><canvas role="img" aria-label="Harshit Dhankhar's interactive badge. Drag to move it."></canvas></div>
+  </section>
 
-                            <p>I have a keen interest in the multi-dimensional applications of AI and Reinforcement Learning and also love to research the algorithmic designs of existing methodologies.</p>
-                            <p>My current
-                                research interests have been shaped throughout my journey as an undergraduate researcher, with
-                                various interdisciplinary research projects based primarily on Deep Learning, AI and Reinforcement
-                                Learning, specifically in optimal routing for Autonomous EVs, CO2 forecasting, job scheduling
-                                using indexable policies in Multi-Armed Bandit (MAB) setting, Qubit routing and Natural
-                                Language processing for Machine Translation (MT) systems.</p>
-                            <p>I completed my Bachelor's thesis, co-supervised by <a href="https://scholar.google.co.in/citations?user=IAL_F04AAAAJ&hl=en" target="_blank">Prof. Asif Ekbal</a> and <a href="https://iitp.irins.org/profile/62494" target="_blank">Dr. Y.M. Tripathi</a>. I spent the summer of 2024 working at <a href="https://www.lamsade.dauphine.fr/en.html" target="_blank">LAMSADE</a>, the AI lab of <a href="https://dauphine.psl.eu/en/" target="_blank">Université Paris Dauphine - PSL</a> under <a href="https://www.lamsade.dauphine.fr/~cazenave/index.php" target="_blank">Prof. Tristan Cazenave</a>. Prior to this, I had collaborated with <a href="https://sites.google.com/view/tejaspbodas/" target="_blank">Dr. Tejas Bodas</a> at Computer Systems Group (CSG),<a href="https://www.iiit.ac.in/" target="_blank"> IIIT Hyderabad</a> for a year, which shaped my inchoate research interests during sophomore year.</p>
-                            
-                            <p>Please feel free to check out my Resume, and drop me an email at [hdhankhar@ucsd.edu] anytime to talk! :)</p>
-                                                        <br>
-                            <p style="text-align:center">
-                                &nbsp~&nbsp
-                                <a href="mailto:hdhankhar@ucsd.edu" target="_blank">Email</a> &nbsp|&nbsp
-                                <a href="data/Resume.pdf" target="_blank" >Resume</a> &nbsp|&nbsp
-                                <a href="https://scholar.google.com/citations?hl=en&user=LLR8P9EAAAAJ" target="_blank" >Google Scholar</a> &nbsp|&nbsp
-                                <a href="https://github.com/harshit2807161" target="_blank" >Github</a> &nbsp|&nbsp
-                                <a href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank">LinkedIn</a> 
-                                &nbsp~&nbsp
-                            </p>
-                        </td>
-                    </tr>
-                </tbody></table>
-                <hr class="soft">
-<!-- News -->
+<section class="block" id="experience" aria-labelledby="experience-h" tabindex="-1">
+  <div class="sec-head"><h2 id="experience-h">Experience</h2></div>
+  <h3 class="sub">Professional</h3>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/logos/aws.svg" alt="" loading="lazy"></div>
+        <div><h4>Amazon Web Services</h4><p class="role">Software Development Engineer Intern</p><p class="meta">Jun 2026 – Sep 2026 · Seattle, WA</p></div>
+        <ul><li>Engineered an operations agent hosted on OpenClaw that autonomously generates pipeline-health, dashboard-anomaly and ticket-queue reports and delivers them to Slack, cutting on-call review time from 4+ hours to 30 minutes.</li><li>Deployed an auto-incident-response system for Sev-2 tickets: an RCA agent runs a multi-hypothesis investigation loop and posts root cause and customer impact within 15 minutes.</li></ul>
+      </article>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/anyfeast_logo.webp" alt="" loading="lazy" width="240" height="240"></div>
+        <div><h4>AnyFeast</h4><p class="role">AI Engineer</p><p class="meta">Feb 2025 – Aug 2025 · London, UK (remote)</p></div>
+        <ul><li>Shipped a zero-touch ETL pipeline that extracts recipe attributes with agentic AI and enriches instructions through a LangGraph-powered RAG module, reducing manual effort by over 90%.</li><li>Replaced popularity sorting with a hybrid-filtering recommender, lifting click-through rate by 30%, validated with A/B tests and Azure Monitor.</li></ul>
+      </article>
+  <h3 class="sub">Research</h3>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/logos/ucsd.png" alt="" loading="lazy" width="159" height="160"></div>
+        <div><h4>UC San Diego · Prof. Xiaolong Wang's lab</h4><p class="role">Graduate Research Assistant, with Nicklas Hansen</p><p class="meta">Oct 2025 – present · San Diego, CA</p></div>
+        <ul><li>HiGym: a high-dimensional continuous-control benchmark built on DMControl that isolates action-space scaling from 2 to 512 degrees of freedom by splitting joints while keeping objectives, dynamics, mass and collision geometry fixed, across six embodiment families.</li><li>Found that model-based agents (TD-MPC2, TD-M(PC)²) degrade far less than model-free PPO as dimensionality grows, with a policy-constraint loss keeping value estimates in check. Under review at NeurIPS 2026.</li></ul>
+      </article>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/psl_logo.png" alt="" loading="lazy" width="798" height="114"></div>
+        <div><h4>LAMSADE, Université Paris Dauphine – PSL</h4><p class="role">AI Research Intern</p><p class="meta">May 2024 – Oct 2024 · Paris, France</p><p class="adv">Advisor: Prof. Tristan Cazenave</p></div>
+        <ul><li>Developed a Nested Monte Carlo Search router for qubit routing in quantum circuits, cutting circuit depth by 10.55% against IBM Qiskit and Google Cirq baselines.</li><li>Mutex-locked qubit scheduling, combinatorial SWAP-set construction and action-masked playout pruning keep exploration sample-efficient and cut average runtime by 37.17%. First-author paper presented at AAAI 2025 (QC+AI), Philadelphia.</li></ul>
+      </article>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/logos/iitp.png" alt="" loading="lazy" width="160" height="160"></div>
+        <div><h4>AI-NLP-ML Lab, IIT Patna</h4><p class="role">Research Affiliate · Bachelor's thesis</p><p class="meta">Aug 2023 – May 2025 · Patna, India</p><p class="adv">Advisors: Prof. Asif Ekbal, Dr. Y. M. Tripathi</p></div>
+        <ul><li>ProNMT: a reward framework that combines quality-estimation models with pronoun generation likelihood for feedback training of English→German translation, improving pronoun translation accuracy and overall COMET (24.06% over the baseline) without human feedback.</li><li>Accepted at WMT 2026; an earlier version became my bachelor's thesis.</li></ul>
+      </article>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/logos/iitp.png" alt="" loading="lazy" width="160" height="160"></div>
+        <div><h4>Advanced Computing Lab, IIT Patna</h4><p class="role">Undergraduate Researcher</p><p class="meta">Jul 2023 – Sep 2024 · Patna, India</p><p class="adv">Advisor: Prof. Rajiv Misra</p></div>
+        <ul><li>Deep RL for EV charging-station routing: a custom Gym environment of Xi'an and a PPO agent that cut cumulative driver cost by 74.19% across baseline strategies, published in Sustainable Energy, Grids and Networks (2026).</li><li>Attention-LSTM forecasting of CO₂ emissions across SAARC countries (IEEE BigData 2023) and a transformer + DRL scheduler for in-home EV charging.</li></ul>
+      </article>
+      <article class="xp">
+        <div class="xp-logo"><img src="images/logos/iiith.png" alt="" loading="lazy" width="160" height="154"></div>
+        <div><h4>Computer Systems Group, IIIT Hyderabad</h4><p class="role">Research Intern</p><p class="meta">Dec 2022 – Dec 2023 · Hyderabad, India</p><p class="adv">Advisor: Dr. Tejas Bodas</p></div>
+        <ul><li>QGI: tabular and deep Q-learning algorithms that learn Gittins indices online for multi-armed bandits with ~50% less memory and ~10% lower runtime than prior methods, applied to pre-emptive job scheduling with unknown service times. Published at WiOpt 2025.</li></ul>
+      </article>
+</section>
 
-                <!-- <br> -->
-                <button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" data-toggle="collapse" data-target="#content-news" id="news"><heading>News</heading></button>
-                <!-- <div class="container"> -->
-                <div id="content-news" class="collapse in">
-                <!-- <div class="scroll">  -->
+<section class="block" id="publications" aria-labelledby="publications-h">
+  <div class="sec-head"><h2 id="publications-h">Publications</h2><p class="kicker">Hover or tab to a row to see the paper's figures.</p></div>
+  <div class="rows pubs">
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Balancing Global Quality and Pronoun-Specific Feedback for Context-Aware Machine Translation <span class="status ok">accepted</span></h3>
+          <p class="authors"><b>Harshit Dhankhar</b>, Baban Gain, Asif Ekbal, Y. M. Tripathi</p>
+          <p class="date">WMT 2026 · Conference on Machine Translation</p>
+          <div class="links"><a href="https://github.com/Harshit2807161/ProNMT" target="_blank" rel="noopener">[code]</a><a href="data/ProNMT_final.pdf" target="_blank" rel="noopener">[earlier version]</a><a href="data/Bachelor_Thesis.pdf" target="_blank" rel="noopener">[thesis]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/pronmt/example.png" alt="" loading="lazy" class="preview preview-0" width="800" height="196"><img src="images/pronmt.png" alt="" loading="lazy" class="preview preview-1" width="486" height="465"><img src="images/work/pronmt/batchwise_comet.png" alt="" loading="lazy" class="preview preview-2" width="567" height="432"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>HiGym: Learning to Act in High-Dimensional Spaces <span class="status review">under review</span></h3>
+          <p class="authors">Authors withheld during double-blind review</p>
+          <p class="date">NeurIPS 2026 submission</p>
+          <div class="links"><a href="https://higym.github.io/" target="_blank" rel="noopener">[project page]</a><a href="https://github.com/higym/HiGym" target="_blank" rel="noopener">[code]</a><a href="https://openreview.net/forum?id=85la7BxE0Q" target="_blank" rel="noopener">[OpenReview]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-0" width="800" height="365"><img src="images/work/higym/scaling_curves.png" alt="" loading="lazy" class="preview preview-1" width="800" height="311"><img src="images/work/higym/avg_ranking.png" alt="" loading="lazy" class="preview preview-2" width="800" height="393"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Optimizing Electric Vehicle Charging Routes with Deep Reinforcement Learning Considering Driver Preferences</h3>
+          <p class="authors">Shivendu Mishra, Anurag Choubey, <b>Harshit Dhankhar</b>, Sri Vaibhav Devarasetty, Rajiv Misra</p>
+          <p class="date">Sustainable Energy, Grids and Networks (Elsevier), 2026</p>
+          <div class="links"><a href="https://doi.org/10.1016/j.segan.2026.102353" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/drl-evcs-module" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Tabular and Deep Reinforcement Learning for Gittins Index</h3>
+          <p class="authors"><b>Harshit Dhankhar</b>, Kshitij Mishra, Tejas Bodas</p>
+          <p class="date">WiOpt 2025 · 23rd International Symposium on Modeling and Optimization in Mobile, Ad Hoc, and Wireless Networks</p>
+          <div class="links"><a href="https://ieeexplore.ieee.org/document/11123313" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/Tabular-and-Deep-Gittins-index-online-learning-" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/qgi_project.png" alt="" loading="lazy" class="preview preview-0" width="716" height="490"><img src="images/work/qgi/runtime_scaling.png" alt="" loading="lazy" class="preview preview-1" width="800" height="747"><img src="images/work/qgi/hyp_tuning.png" alt="" loading="lazy" class="preview preview-2" width="800" height="500"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Nested Qubit Routing</h3>
+          <p class="authors"><b>Harshit Dhankhar</b>, Tristan Cazenave</p>
+          <p class="date">AAAI 2025 · Workshop on Quantum Computing and Artificial Intelligence (QC+AI)</p>
+          <div class="links"><a href="data/NesQ_post_proceedings.pdf" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/NesQ" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/nesq/nmc-one.jpg" alt="" loading="lazy" class="preview preview-0" width="800" height="338"><img src="images/nesq.png" alt="" loading="lazy" class="preview preview-1" width="621" height="625"><img src="images/work/nesq/random_circuit_depth_30_150_opt.png" alt="" loading="lazy" class="preview preview-2" width="800" height="480"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Analysis and Forecasting of Carbon Emission in SAARC Countries using Attention-based LSTM</h3>
+          <p class="authors">Anil Verma, <b>Harshit Dhankhar</b>, Rajiv Misra, T. N. Singh, Om Prakash Dhakal</p>
+          <p class="date">IEEE BigData 2023 · IEEE International Conference on Big Data</p>
+          <div class="links"><a href="https://ieeexplore.ieee.org/abstract/document/10386385" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/co2-prediction-saarc-countries" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/co2_saarc.png" alt="" loading="lazy" class="preview preview-0" width="595" height="791"><img src="images/work/co2/val_comp.png" alt="" loading="lazy" class="preview preview-1" width="618" height="484"><img src="images/work/co2/india.png" alt="" loading="lazy" class="preview preview-2" width="589" height="432"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h3>Enhancing In-Home EV Charging Optimization with Time Series Transformers and Policy-based DRL: A Multi-Timeframe Approach for Cost Reduction and User Satisfaction <span class="status review">under review</span></h3>
+          <p class="authors">Shivendu Mishra, Anurag Choubey, <b>Harshit Dhankhar</b>, Sri Vaibhav Devarasetty, Rajiv Misra</p>
+          <p class="date">Manuscript, 2024 · under review</p>
+          <div class="links"><a href="data/EVPP.pdf" target="_blank" rel="noopener">[manuscript]</a><a href="https://github.com/Harshit2807161/transformerRL-ev-charging-PP" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" loading="lazy" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" loading="lazy" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" loading="lazy" class="preview preview-2" width="800" height="400"></div>
+      </article>
+  </div>
+</section>
 
-                <table border=0 class="bg_colour" style="padding:10px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Sept '25</p>
-                        </td>
-                        <td>
-                            Started MS in Computer Science at UC San Diego.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Aug '25</p>
-                        </td>
-                        <td>
-                            Recieved my undergrad degree at the 12th convocation of IIT Patna.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">June '25</p>
-                        </td>
-                        <td>
-                            Attended the Microsoft Research Academic Summit held in Bangalore, India.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">May '25</p>
-                        </td>
-                        <td>
-                            Paper "Tabular and Deep Reinforcement Learning for Gittins Index" presented at WiOpt 2025 held in Linköping, Sweden.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Feb '25</p>
-                        </td>
-                        <td>
-                            Started working as AI Engineer at AnyFeast, London. 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Feb '25</p>
-                        </td>
-                        <td>
-                            Got into UCSD and NYU Courant for MSCS starting Fall 25.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Dec '24</p>
-                        </td>
-                        <td>
-                            Submitted my work on leveraging quality estimation models for feedback training in MT to ACL Rolling Review.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Dec '24</p>
-                        </td>
-                        <td>
-                            Attended the Inter IIT Tech Meet 13.0 at IIT Bombay from 11th to 14th December! Got to lead a Problem Statement by Dream11.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Dec '24</p>
-                        </td>
-                        <td>
-                            My work on AI based agents for quantum circuit routing got accepted at AAAI '25 (QC+AI).
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Aug '24</p>
-                        </td>
-                        <td>
-                            Submitted my work on RL-based learning of indexable policies to AAAI.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">June '24</p>
-                        </td>
-                        <td>
-                            Presented our work on learning Gittins index online at the RL4SN workshop held in Toulouse, France.
-                        </td>
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">May '24</p>
-                        </td>
-                        <td>
-                            Submitted work on Deep-RL based EV routing to IEEE transactions on reliability.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">May '24</p>
-                        </td>
-                        <td>
-                            Started my summer internship at PSL Dauphine, Paris.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Nov '23</p>
-                        </td>
-                        <td>
-                            Paper accepted at IEEE conference on big data, Italy.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Oct '23</p>
-                        </td>
-                        <td>
-                            Organised IIT Patna's chapter of TEDx.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">May '23</p>
-                        </td>
-                        <td>
-                            Started my summer internship at IIITH.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Feb '23</p>
-                        </td>
-                        <td>
-                            Won silver medal at IIT Tech Meet 11.0.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Oct '22</p>
-                        </td>
-                        <td>
-                            Joined uni's ML society as sophomore coordinator.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Aug '22</p>
-                        </td>
-                        <td>
-                            Runner up at Smart India Hackathon (SIH), held in Vishakapatnam.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="color:darkblue; display:inline">Nov '21</p>
-                        </td>
-                        <td>
-                            Started my undergrad journey at IIT Patna.
-                        </td>
-                    </tr>
-                    
-                </tbody></table>
-                
-                <!--button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" onclick="(() => {toggleNews('table-row')})()">
-                    See more
-                </button-->
-                </div>
-                <hr class="soft">
+<section class="block" id="projects" aria-labelledby="projects-h">
+  <div class="sec-head"><h2 id="projects-h">Key projects</h2><p class="kicker">Hover or tab to a row for screenshots and figures.</p></div>
+  <div class="rows">
+    <h3 class="cat">Agents &amp; LLM systems</h3>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>job-hunting-buddy</h4>
+          <p>Phase 1 polls SimplifyJobs every 15 minutes (JobSpy hourly) for new-grad SWE and ML roles in the US and emails each genuinely new posting, with an idempotent ledger, conditional GETs and burst guards. Phase 2 prepares applications in the candidate's own browser through Greenhouse, Ashby, Workable and Lever adapters, and keeps every submission behind an explicit per-draft approval in a private Next.js + FastAPI dashboard with receipt-confirmed daily counts.</p>
+          <p class="date">Sep 2026 – present · Python, Browser Use, Next.js, FastAPI</p>
+          <div class="links"><a href="https://github.com/Harshit2807161/job-hunting-buddy" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/jhb/dashboard-top.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="555"><img src="images/work/jhb/dashboard.png" alt="" loading="lazy" class="preview preview-1" width="509" height="800"></div>
+      </article>
+      <article class="project" tabindex="0">
+        <div class="label"><div class="copy">
+          <h4>Insurance SOP agent</h4>
+          <p>A claims-support agent that follows a fixed SOP (verify identity → resolve intent → process case → post-process) yet converses naturally. The SOP is a declarative YAML spec run by a generic engine: code owns phases, gates and side effects, the model reasons freely only where the spec allows, with read-only session-scoped tools, prompt-injection guards, emotion-aware de-escalation and human handoff. Runs on Claude, or keyless on a local Laya decision model with templated replies.</p>
+          <p class="date">Oct 2026 · Python, FastAPI, Claude API, Docker</p>
+          <div class="links"><span class="private">private repo</span></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/insurance/demo.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="449"><img src="images/work/gen/insurance-sop.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="608"><img src="images/work/insurance/escalation.png" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="449"></div>
+      </article>
+      <article class="project" tabindex="0">
+        <div class="label"><div class="copy">
+          <h4>Gr8r</h4>
+          <p>AI grading of handwritten answer sheets. Teachers set up classes, exams and rubrics; a Celery worker transcribes each scan with a vision model and LangGraph agents grade it against the rubric with per-question feedback. Criterion-level grading with an evaluator loop and teacher review is in progress. Multi-tenant Next.js 16 + FastAPI + PostgreSQL app with a model router across Claude, OpenAI and self-hosted vLLM/SGLang.</p>
+          <p class="date">Jan 2026 – present · Next.js, FastAPI, PostgreSQL, Celery, LangGraph</p>
+          <div class="links"><span class="private">private repo</span></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/gr8r.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+      </article>
+      <article class="project" tabindex="0">
+        <div class="label"><div class="copy">
+          <h4>Schema linking</h4>
+          <p>Fine-tuned Qwen2.5-1.5B-Instruct with a LoRA adapter to map a natural-language question plus database schema to the tables and columns the answering SQL would touch, over 17 Spider-format databases. Training sweeps on RapidFire AI, gold schema links extracted from SQL for augmentation. CSE 234, UC San Diego.</p>
+          <p class="date">Spring 2026 · PEFT, TRL, RapidFire AI</p>
+          <div class="links"><span class="private">private repo</span></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/schema-linking.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+      </article>
+      <article class="project" tabindex="0">
+        <div class="label"><div class="copy">
+          <h4>RapidFire RAG</h4>
+          <p>End-to-end retrieval-augmented generation over a documentation corpus, swept across 30+ chunking, retrieval and reranking configurations: RST-aware chunking with image captions, FAISS retrieval, cross-encoder reranking and an LLM judge. Final pipeline scores F1@5 0.737, faithfulness 0.98 and correctness 0.87 on the golden set. CSE 234, UC San Diego.</p>
+          <p class="date">Spring 2026 · FAISS, cross-encoders, LLM-as-judge</p>
+          <div class="links"><span class="private">private repo</span></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/rapidfire-rag.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+      </article>
+    <h3 class="cat">Reinforcement learning &amp; control</h3>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>HiGym</h4>
+          <p>A benchmark that isolates action-space scaling in continuous control: six DMControl embodiment families split from 2 to 512 degrees of freedom while objectives, dynamics and mass stay fixed. Shows that model-based TD-MPC2 and TD-M(PC)² degrade far less than PPO as dimensionality grows. With Nicklas Hansen, Prof. Xiaolong Wang's lab.</p>
+          <p class="date">Oct 2025 – present · DMControl, TD-MPC2, PPO</p>
+          <div class="links"><a href="https://higym.github.io/" target="_blank" rel="noopener">[project page]</a><a href="https://github.com/higym/HiGym" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/higym/quadruped-512.jpg" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="449"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="365"><img src="images/work/higym/walker-256.jpg" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="449"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>EV charging routes</h4>
+          <p>A custom Gym environment of Xi'an's road and charger network where a PPO agent picks charging stations under queue, placement and price uncertainty, weighing distance against cost by driver preference. Cuts cumulative driver cost by 74.19% versus baseline routing strategies. Published in Sustainable Energy, Grids and Networks.</p>
+          <p class="date">2023 – 2026 · PPO, DQN, DDQN, OpenAI Gym</p>
+          <div class="links"><a href="https://doi.org/10.1016/j.segan.2026.102353" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/drl-evcs-module" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>In-home EV charging</h4>
+          <p>Transformer forecasters (PatchTST, Autoformer, Informer) read electricity-price history over several timeframes and feed DQN, DDPG and PPO schedulers that decide when to charge or discharge, cutting cost while keeping drivers satisfied in a vehicle-to-grid setting. Manuscript with Prof. Rajiv Misra's group at IIT Patna.</p>
+          <p class="date">2024 · PyTorch, Stable-Baselines3</p>
+          <div class="links"><a href="data/EVPP.pdf" target="_blank" rel="noopener">[manuscript]</a><a href="https://github.com/Harshit2807161/transformerRL-ev-charging-PP" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" loading="lazy" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" loading="lazy" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" loading="lazy" class="preview preview-2" width="800" height="400"></div>
+      </article>
+    <h3 class="cat">Products &amp; platforms</h3>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>Alloc8</h4>
+          <p>Led a team of 8 to build the dorm-room allocation portal for 3,000 students across 1,400 rooms at IIT Patna, as Senior-Year Technical Secretary. MERN stack on a load-balanced VPS with 95%+ uptime under launch traffic, Redis locks for contention-free room picks, spherical k-means roommate pairing from free-text responses. Saves an estimated 200+ hours a year.</p>
+          <p class="date">2024 · MongoDB, Express, React, Node.js, Redis</p>
+          <div class="links"><a href="https://alloc8.in/" target="_blank" rel="noopener">[website]</a><a href="https://drive.google.com/file/d/1xsRlNPqEN_CiAxSVJWuw3Zz-1-XOxruA/view" target="_blank" rel="noopener">[demo]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/alloc8.png" alt="" loading="lazy" class="preview preview-0" width="562" height="361"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>Privy Notion</h4>
+          <p>A collaborative workspace with real-time multi-user editing over Socket.IO: users sign in, share a workspace and edit the same document together. Next.js and Tailwind on the front end, Prisma with PostgreSQL behind it, Zod validation, JWT auth and NextAuth sessions.</p>
+          <p class="date">2025 · Next.js, Socket.IO, Prisma, PostgreSQL</p>
+          <div class="links"><a href="https://github.com/Harshit2807161/privy-notion" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/privy.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+      </article>
+      <article class="project" tabindex="0">
+        <div class="label"><div class="copy">
+          <h4>QTWAYS storefront</h4>
+          <p>E-commerce site for the QTWAYS skincare brand (Shilpex Pharmysis): shop by category and skin concern, product pages with reviews and stock states, cart and login, newsletter and WhatsApp support. React + Tailwind CSS, deployed on Vercel.</p>
+          <p class="date">Jan 2026 · React, Tailwind CSS, Vercel</p>
+          <div class="links"><a href="https://qtways-website.vercel.app" target="_blank" rel="noopener">[live site]</a><span class="private">private repo</span></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/qtways/home.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="500"><img src="images/work/qtways/shop.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="500"><img src="images/work/gen/qtways.png" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="608"></div>
+      </article>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>ProfessionPro</h4>
+          <p>End-to-end NLP career guidance: parses and tokenizes résumés, classifies them into job domains with KNN from skills, education and experience, and pairs the result with a questionnaire for personalized suggestions in a web portal. Runner-up at Smart India Hackathon 2022, Visakhapatnam.</p>
+          <p class="date">Aug 2022 · Python, NLP, Flask</p>
+          <div class="links"><a href="https://github.com/Harshit2807161/SIH-2022-DR710-PROSOL" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/sih_prosol.png" alt="" loading="lazy" class="preview preview-0" width="800" height="337"></div>
+      </article>
+    <h3 class="cat">Vision &amp; perception</h3>
+      <article class="project">
+        <div class="label"><div class="copy">
+          <h4>Vitals from patient-monitor photos</h4>
+          <p>Reads vitals off photographs of patient monitors: YOLOv5 finds the monitor, InceptionV3 classifies its layout, XGBoost labels each reading and EasyOCR reads the digits, robust to viewing angle, monitor shape and background. Confidence 0.90–0.97 across vital types. Built for Inter IIT Tech Meet 11.0 (Cloud Physician problem statement).</p>
+          <p class="date">Feb 2023 · YOLOv5, InceptionV3, XGBoost, EasyOCR</p>
+          <div class="links"><a href="https://github.com/Harshit2807161/Cloud-Physician" target="_blank" rel="noopener">[code]</a></div>
+        </div></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/cloud-physician/Flowchart.png" alt="" loading="lazy" class="preview preview-0" width="800" height="449"><img src="images/cloud_phys.png" alt="" loading="lazy" class="preview preview-1" width="800" height="258"><img src="images/work/cloud-physician/monitor.jpeg" alt="" loading="lazy" class="preview preview-2" width="800" height="450"></div>
+      </article>
+  </div>
+</section>
+</main>
 
-<!-- Education -->
+<footer id="contact">
+  <h2>Building systems that learn, <br>and the research behind them</h2>
+  <p>
+    <span class="contact-line">I finish my MS at UC San Diego in December 2026</span>
+    <span class="contact-line">and am looking for ML/AI engineering and research</span>
+    <span class="contact-line">roles from January 2027. Let's connect on <a class="social" href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank" rel="noopener"><span class="social-pill linkedin">LinkedIn</span></a>,</span>
+    <span class="contact-line"><a class="social" href="https://github.com/harshit2807161" target="_blank" rel="noopener"><span class="social-pill github">GitHub</span></a> or <a class="social" href="https://scholar.google.com/citations?hl=en&amp;user=LLR8P9EAAAAJ" target="_blank" rel="noopener"><span class="social-pill scholar">Google Scholar</span></a>, or email me at</span>
+    <span class="contact-line"><a class="social" href="mailto:hdhankhar@ucsd.edu"><span class="social-pill email">hdhankhar@ucsd.edu</span></a>.</span>
+  </p>
+  <p class="colophon">Last updated October 2026 · San Diego, CA</p>
+</footer>
 
-                <button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" data-toggle="collapse" data-target="#content-education" id="education"><heading>Education</heading></button>
-                <div id="content-education" class="collapse in">
+<dialog class="about" id="about" aria-labelledby="aboutTitle">
+  <div class="panel">
+    <div>
+      <header>
+        <h2 id="aboutTitle">About</h2>
+        <button type="button" class="close" id="closeBtn" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l10 10M14 4 4 14"/></svg>
+        </button>
+      </header>
+      <div class="bio">
+        <p>I'm a second-year MS student in Computer Science at UC San Diego, where I work on reinforcement learning in high-dimensional action spaces with Nicklas Hansen in Prof. Xiaolong Wang's lab. I like taking a problem end to end: diving into theory, building the system, and shipping something people actually use.</p>
+        <p>In summer 2026 I was an SDE intern at Amazon Web Services, building operations and incident-response agents. Before that I was an AI engineer at AnyFeast in London, built Monte Carlo search routers for quantum circuits at LAMSADE (PSL Dauphine), and learned indexable bandit policies with IIIT Hyderabad. I graduated from IIT Patna in Mathematics &amp; Computing in 2025.</p>
+        <p>Outside research: Senior-Year Technical Secretary at IIT Patna, overall organizer of TEDxIIT Patna 2023, silver medal at Inter IIT Tech Meet 11.0 and runner-up at Smart India Hackathon 2022.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Education</h3>
+      <ul class="experience">
+        <li><span class="years">2025 – 2026</span><span class="company">UC San Diego · MS Computer Science</span><span class="role">3.925 GPA</span></li>
+        <li><span class="years">2021 – 2025</span><span class="company">IIT Patna · BS Mathematics &amp; Computing</span><span class="role">3.75 GPA</span></li>
+      </ul>
+      <p class="toolbox">Toolbox: Python, C++, Java, TypeScript · PyTorch, LangGraph, FastAPI, Next.js, PostgreSQL, Redis, Docker, Kubernetes, AWS</p>
+      <h3 style="margin-top:28px">Experience</h3>
+      <ul class="experience">
+        <li><span class="years">2026</span><span class="company">Amazon Web Services</span><span class="role">SDE Intern</span></li>
+        <li><span class="years">2025 – present</span><span class="company">UC San Diego</span><span class="role">Research Assistant</span></li>
+        <li><span class="years">2025</span><span class="company">AnyFeast</span><span class="role">AI Engineer</span></li>
+        <li><span class="years">2024</span><span class="company">PSL Dauphine</span><span class="role">AI Research Intern</span></li>
+        <li><span class="years">2023 – 2025</span><span class="company">IIT Patna</span><span class="role">Research Affiliate</span></li>
+        <li><span class="years">2022 – 2023</span><span class="company">IIIT Hyderabad</span><span class="role">Research Intern</span></li>
+      </ul>
+      <a class="resume" href="data/Resume.pdf" target="_blank" rel="noopener">Résumé ↗</a>
+    </div>
+  </div>
+</dialog>
 
-                <table border=0 class="bg_colour" style="padding:20px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto"><tbody>
+<script>
+(function(){
+  var nm = document.querySelector('.card .nm');
+  function fitTo(el, target){
+    var prev = el.style.fontSize;
+    el.style.fontSize = '100px';
+    var w = el.getBoundingClientRect().width;
+    el.style.fontSize = w ? (100 * target / w) + 'px' : prev;
+  }
+  function fit(){
+    var card = nm.closest('.card'), cs = getComputedStyle(card);
+    var inner = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (inner > 0) fitTo(nm, inner * 0.96);
+  }
+  fit();
+  if (document.fonts) { document.fonts.ready.then(fit); document.fonts.addEventListener('loadingdone', fit); }
+  var t, lastW = innerWidth;
+  addEventListener('resize', function(){ if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(t); t = setTimeout(fit, 60); });
 
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/ucsd_logo.png' width="110" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:top">
-                            <papertitle><big>University of California San Diego</big></papertitle>
-                            <br>
-                            <papertitle style="color:gray"><big>Master of Science in </big></papertitle><papertitle><big>Computer Science and Engineering</big></papertitle>
-                            <br>
-                            Fall 2025 - Expected Spring 2027
-                            <br>
-                            <br>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/iitp_logo.png' width="110" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:top">
-                            <papertitle><big>Indian Institute of Technology Patna</big></papertitle>
-                            <br>
-                            <papertitle style="color:gray"><big>Bachelor of Science in </big></papertitle><papertitle><big>Mathematics and Computing</big></papertitle>
-                            <br>
-                            Nov '21 - Jul '25 | CPI: 8.34/10.0
-                            <br>
-                            <br>
-                            <p>
-                                Student Societies:
-                                <ul>
-                                    <li> Senior-year Technical Secretary | Technical Council, Students' Gymkhana</li>
-                                    <li> Overall Organiser | TEDxIIT Patna 2023</li>
-                                    <li> Sophomore year coordinator (Sponsorship and Marketing) | Celesta 2022:  Annual Technical Festival </li>
-                                    <li> Sophomore year coordinator | NJACK ML: IIT Patna's ML society </li>
-                                    <li> Sophomore year coordinator (Media and Public Relations) | Anwesha 2022: Annual Cultural Festival </li>
-                                    <li> Sophomore year coordinator (Planning and Curation) | TEDxIIT Patna 2022</li>
-                                    <li> Senior content correspondent | Forthright: Media Body, IIT Patna </li>
-                                </ul>
-                            </p>
-                        </td>
-                    </tr>
-
-                </tbody></table>
-                </div>
-                <hr class="soft">
-
-<!-- Experience -->
-
-                <button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" data-toggle="collapse" data-target="#content-experience" id="experience"><heading>Experience</heading></button>
-                <div id="content-experience" class="collapse in">
-
-                <table border=0 class="bg_colour" style="padding:20px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;margin-top: 10px;"><tbody>
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/anyfeast_logo.webp' style="width: 120px; margin-top: 20px; margin-left: 20px;" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:middle">
-                            <papertitle style="color:gray"><big>AI Engineer</big> </papertitle> <papertitle ><big> | AnyFeast, London</big></papertitle>
-                            <br>
-                            Feb '25 - Aug '25
-                            <br>
-                            <br>
-                            <p>
-                                • Deployed a zero-touch ETL pipeline that automates recipe attribute extraction using agentic AI, optimizes local ingredient retrieval via a user-proximity-based caching algorithm, and enriches recipe's instructions with a LangChain-powered RAG module.
-                                <br>
-                                • Implemented a recommender system using hybrid filtering approach to personalize users' feed, increasing user click-through rate by over 30%.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/psl_logo.png' style="width: 160px; margin-top: 50px;" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:middle">
-                            <papertitle style="color:gray"><big>AI Lab Research intern</big> </papertitle> <papertitle ><big> | LAMSADE, AI Lab @ PSL Dauphine</big></papertitle>
-                            <br>
-                            May '24 - Oct '24
-                            <br>
-                            <br>
-                            <p>
-                                Advisor: Prof. Tristan Cazenave
-                                <br>
-                                Worked on devising Monte Carlo Tree Search based methods to solve the qubit routing problem in quantum circuits. Leveraged Nested Monte carlo search to propose an algorithm which beats SOA methods by upto 10.55% in circuit depth. Also, our algorithm boasts a 37.17% runtime advantage compared to other tree-based solutions.   
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/iiit.png' width="155" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:top">
-                            <papertitle style="color:gray"><big>Research Intern</big> </papertitle> <papertitle ><big> | Computer Systems Group (CSG) @ IIITH </big></papertitle>
-                            <br>
-                            Dec '22 - Dec '23
-                            <br>
-                            <br>
-                            <p>
-                                Advisor: Dr. Tejas Bodas
-                                <br>
-                                Devised a novel two time-scale algorithm based on Q-learning to learn indexable policies for Multi-Armed Bandits (MABs) and explored its applications in job scheduling.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/iitp_logo.png' width="120" style="margin-left: 20px;" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:top">
-                            <papertitle style="color:gray"><big>Research affiliate</big> </papertitle> <papertitle ><big> | AI-NLP-ML Lab @ IIT Patna</big></papertitle>
-                            <br>
-                            Aug '23 - May '25
-                            <br>
-                            <br>
-                            <p>
-                                Advisor: Prof. Asif Ekbal
-                                <br>
-                                Worked on leveraging Quality-estimation based models along with 'Pronoun Generation Likelihood (PGL)' to design a novel reward framework for feedback training to improve translation quality of MT systems (EN -> DE). This work is now part of my Bachelor's thesis, co-supervised by Dr. Tripathi and has been submitted at <b>ACL Rolling Review (ARR).</b>
-                            </p>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td style="padding:10px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/iitp_logo.png' width="120" style="margin-left: 20px;" class="side-image">
-                            </div>
-                        </td>
-                        <td style="padding:10px;width:75%;vertical-align:top">
-                            <papertitle style="color:gray"><big>Undergraduate Researcher</big> </papertitle> <papertitle ><big> | Advanced Computing Lab @ IIT Patna</big></papertitle>
-                            <br>
-                            July '23 - September '24
-                            <br>
-                            <br>
-                            <p>
-                                Advisor: Prof. Rajiv Misra (HOD, CSE)
-                                <br>
-                                Worked on various projects involving:
-                                <ul>
-                                    <li>Use of Attention-aware LSTM for analysing and predicting carbon emissions in SAARC countries.</li>
-                                    <li>Deep-RL methods for EV charging station selection in a vehicle routing setting.</li>
-                                    <li>Transformer and Deep-RL based method to predict charging prices for EVs in a V2G setting.</li>
-                                </ul>
-                            </p>
-                        </td>
-                    </tr>
-
-                </tbody></table>
-                </div>
-                <hr class="soft">
-
-<!-- Publications -->
-
-                <button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" data-toggle="collapse" data-target="#content-publications" id="publications"><heading>Publications</heading></button>
-                <div id="content-publications" class="collapse in">
-
-                <table border=0 class="bg_colour" style="padding:20px;width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/qgi_project.png' width="200">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Tabular and Deep Reinforcement Learning for Gittins Index</big></papertitle>
-                            <br>
-                            <p>
-                                <strong>Harshit Dhankhar</strong>, Dr. Tejas Bodas
-                                <br>
-                                WiOpt 2025
-                                <br>
-                                <em><a href="https://ieeexplore.ieee.org/document/11123313" target="_blank">[paper]</a></em>
-                                <em><a href="https://github.com/Harshit2807161/QGI" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                Developed a novel Q-learning based algorithm and its Deep-RL counterpart for estimating Gittins indices in Multi-Armed Bandits (MABs), surpassing state-of-the-art methods in terms of memory (~50%), runtime (~10%), and convergence. We also applied the algorithm in minimizing the mean flowtime in a pre-emptive job scheduling problem when jobs are available in batches and have an unknown service time distribution.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/nesq.png' width="170">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Nested Qubit Routing</papertitle></big>
-                            <br>
-                            <p>
-                                <strong>Harshit Dhankhar</strong>, Prof. Tristan Cazenave
-                                <br>
-                                AAAI 2025 (QC+AI) 
-                                <br>
-                                <em><a href="data/NesQ_post_proceedings.pdf" target="_blank">[paper]</a></em>
-                                <em><a href="https://github.com/Harshit2807161/NesQ" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                Worked on developing a Nested Monte Carlo Search (NMCS)-based router for optimising circuit depths in qubit routing problem for quantum circuits. Our routing agent was able to outperformed industry-standard solutions from leaders like Google and IBM by an impressive 10.55%, across all our experiments. 
-                            </p>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/co2_saarc.png' width="150">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Analysis and Forecasting of Carbon Emission in
-                                SAARC Countries using Attention-based LSTM</big></papertitle>
-                            <br>
-                            <p>
-                                Anil Verma, <strong>Harshit Dhankhar</strong>, Prof. Rajiv Misra, Prof. T.N. Singh, Om Prakash Dhakal
-                                <br>
-                                IEEE International Conference on Big Data <strong>(IEEE BigData)</strong>, 2023
-                                <br>
-                                <em><a href="https://ieeexplore.ieee.org/abstract/document/10386385" target="_blank">[paper]</a></em>
-                                <em><a href="https://github.com/Harshit2807161/co2-prediction-saarc-countries" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                We drew a comparative analysis conclusively demonstrating the superior performance of A-LSTM models over baseline LSTM models when applied to the CO2 emission dataset sourced from Our World in Data (OWID) and World Bank Indicator database focused on SAARC countries. Specifically, the Attention-based LSTM model showcases a marked improvement of 57%.
-                            </p>
-                        </td>
-                    </tr>
-
-                </tbody></table>
-                </div>
-                <hr class="soft">
-
-<!-- Projects -->
-
-                <button style="border:0px transparent; background-color: transparent;outline:none;"type="button" class="collapsible" data-toggle="collapse" data-target="#content-projects" id="projects"><heading>Key Projects</heading></button>
-                <div id="content-projects" class="collapse in">
-
-                <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/alloc8.png' width="170">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Alloc8 - Dorm Room Allocation Portal</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="https://drive.google.com/file/d/1xsRlNPqEN_CiAxSVJWuw3Zz-1-XOxruA/view" target="_blank">[Demo]</a></em>&nbsp;
-                                <em><a href="https://re.alloc8.in/" target="_blank">[Website]</a></em>
-                            </p>
-                            <p>
-                                Led the development of a portal to streamline dorm room allocation for 3000 students across 1400 rooms at IIT Patna. Designed a user-friendly interface, backend deployed on VPS with load balancing to manage high traffic; implemented Redis-based locks for secure room selection and performed roommate pairing using Spherical K-Means clustering.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/pronmt.png' width="170">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Quality Estimation based feedback training for improving pronoun translation</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="data/ProNMT_final.pdf" target="_blank">[paper]</a></em>
-                            </p>
-                            <p>
-                                Advisor: Prof. Asif Ekbal <br>
-                                We developed a novel reward framework called 'ProNMT' using quality estimation models and 'pronoun generation likelihood (PGL)' to enhance English-to-German MT, particularly pronoun translation, bypassing the need of human feedback. Extensive experiments demonstrate significant gains in pronoun translation accuracy and general translation quality across multiple metrics. ProNMT offers an efficient, scalable, and context-aware approach to improving NMT systems, particularly in translating context-dependent elements like pronouns.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/evcs-framework.png' width="170">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Optimising electric vehicle charging routes with Deep Reinforcement Learning considering driver preferences</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="" target="_blank">[paper]</a></em>
-                                <em><a href="https://github.com/Harshit2807161/drl-evcs-module" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                Advisor: Prof. Rajiv Misra (HOD, CSE) <br>
-                                Studied the use of Deep RL methods (DQN, DDPG, PPO) for prioritising minimisation of distance or cost (based on driver's preference) in grid based charging station selection framework to aid decision making of automated EVs. The environment includes various uncertainities related to charging queues, placement of cars at any time, charging costs, etc. Under review at <b>IEEE Transactions on Reliability</b>. 
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/EVPP.png' width="210">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Optimizing In-Home EV Charging: Real-Time Optimization with Time Series Transformers and Policy-based DRL</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="data/EVPP.pdf" target="_blank">[paper]</a></em>
-                                <em><a href="https://github.com/Harshit2807161/transformerRL-ev-charging-PP/tree/main" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                Advisor: Prof. Rajiv Misra (HOD, CSE) <br>
-                                We proposed a transformer-based network for electricity price forecasting, enhancing the scheduling of EV charging to minimize costs and maximize user satisfaction. In addition, Deep-RL methods (DQN, DDPG, PPO) were employed for learning and scheduling EV charging and discharging. Under review at <b>Springer's Applied Intelligence Journal</b>.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:30px;width:25%;vertical-align:right">
-                            <div class="one">
-                                <img src='images/Notion.png' width="120">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Privy Notion: A collaborative note-taking workspace</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="https://github.com/Harshit2807161/privy-notion" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                In this project, I developed a full-stack collaborative text editing platform enabling real-time collaboration with Socket.IO. This allows different users to login and collaboratively share a workspace. Built the frontend with Next.js and Tailwind CSS, and the backend with Next.js, PostgreSQL, and Prisma ORM. Implemented robust validation with Zod, authentication with JWT, and session management via NextAuth.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/cloud_phys.png' width="190">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>Vital Extraction from ECG Monitor Images</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="https://github.com/Harshit2807161/Cloud-Physician" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                This project automates the extraction of medical vitals from monitor images using a deep learning-based pipeline. The model processes an unlabeled monitor image to output vital signs like heart rate and oxygen levels. Our approach integrates YOLOv5 for monitor detection, InceptionV3 for classification, XGBoost for vital type classification, and EasyOCR for digit recognition. The system delivers reliable accuracy in identifying vitals, with confidence scores ranging from 0.9 to 0.97. The proposed model is scalable and can handle challenges such as variations in monitor angle, shape, and background color.
-                            </p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:20px;width:25%;vertical-align:middle">
-                            <div class="one">
-                                <img src='images/sih_prosol.png' width="170">
-                            </div>
-                        </td>
-                        <td style="padding:20px;width:75%;vertical-align:top">
-                            <papertitle><big>ProfessionPro: An end-to-end career recommendation system</papertitle></big>
-                            <br>
-                            <p>
-                                <em><a href="https://github.com/Harshit2807161/SIH-2022-DR710-PROSOL/tree/main" target="_blank">[code]</a></em>
-                            </p>
-                            <p>
-                                In our project "ProfessionPro," we developed an end-to-end framework for NLP-based career guidance. We parsed and pre-process the tokens from applicant resume and leveraged KNN to classify resumes into job domains based on skills, education, and work experience. We also built a career based questionnaire for personalized suggestions and created a user-friendly web portal. Our project was recognized as a runner-up in SIH (Smart India Hackathon) 2022, held in Vishakapatnam, India.
-                            </p>
-                        </td>
-                    </tr>            
-                </tbody></table>
-                </div>
-                <hr class="soft">
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>Last updated: September 2025</p>
-                <p><b>Note:</b> Some of the code links might point to private Github repositories due to ongoing review process of that project at some journal/conference.</p>
-                <p>This template is a modification to Jon Barron's <a href="https://jonbarron.info/" target="_blank">website</a>. It has further been modified by <a href="https://rishabkhincha.github.io/" target="_blank">Rishab Khincha</a> and <a href="https://github.com/fliptrail" target="_blank">Amish Mittal</a>. Find the source code to my version <a href="https://github.com/harshit2807161/harshit2807161.github.io" target="_blank">here</a>. Feel free to clone it for your own use while attributing the original author <a href="https://jonbarron.info/" target="_blank">Jon Barron</a>.</p>
-                <!--p>As a policy, I don't indulge with Ed-Tech for-profit companies. See non-exhaustive list <a href="./shited.txt" target="_blank">here.</a></p-->
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p></p>
-            </td>
-        </tr>
-    </table>
-
-</body>
-
-<script async>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-8EQTMHM42K');
-
-    function toggleNews(val) {
-        console.log("Setting news items as: ", val)
-        const elementsToHide = document.getElementsByClassName("news-default-hide")
-        for (const element of elementsToHide){
-            element.style.display = val
-        }
+  // Row highlight follows the real pointer: recomputed on every move and on scroll, with a light parallax.
+  var px = -1, py = -1, activeRow = null, hoverRaf = 0;
+  function setActive(row){
+    if (row === activeRow) return;
+    if (activeRow){ activeRow.classList.remove('active'); activeRow.closest('.rows').classList.remove('has-active'); }
+    activeRow = row;
+    if (row){ row.classList.add('active'); row.closest('.rows').classList.add('has-active'); }
+  }
+  function updateHover(){
+    hoverRaf = 0;
+    if (px < 0 || matchMedia('(max-width: 700px)').matches) { setActive(null); return; }
+    var el = document.elementFromPoint(px, py);
+    var row = el && el.closest ? el.closest('.rows .project') : null;
+    setActive(row);
+    if (row){
+      var r = row.getBoundingClientRect();
+      row.style.setProperty('--mx', (((px - r.left) / r.width - .5) * 28).toFixed(1) + 'px');
+      row.style.setProperty('--my', (((py - r.top) / r.height - .5) * 18).toFixed(1) + 'px');
     }
+  }
+  function queueHover(){ if (!hoverRaf) hoverRaf = requestAnimationFrame(updateHover); }
+  addEventListener('pointermove', function(e){ if (e.pointerType === 'touch') return; px = e.clientX; py = e.clientY; queueHover(); }, { passive: true });
+  addEventListener('scroll', queueHover, { passive: true });
+  document.documentElement.addEventListener('mouseleave', function(){ px = -1; setActive(null); });
 
-    toggleNews("none")
+  var dlg = document.getElementById('about'), moreBtn = document.getElementById('moreBtn');
+  if (typeof dlg.showModal !== 'function') { moreBtn.hidden = true; return; }
+  var open = function(){ dlg.showModal(); requestAnimationFrame(function(){ dlg.classList.add('shown'); }); };
+  var close = function(){
+    dlg.classList.remove('shown');
+    var done = function(){ if (dlg.open) dlg.close(); };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+    dlg.querySelector('.panel').addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 600);
+  };
+  moreBtn.addEventListener('click', open);
+  document.getElementById('closeBtn').addEventListener('click', close);
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) close(); });
+  dlg.addEventListener('cancel', function(e){ e.preventDefault(); close(); });
+})();
 </script>
-
+<script type="module" src="js/lanyard.js?v=17"></script>
+</body>
 </html>
