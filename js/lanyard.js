@@ -139,7 +139,7 @@ async function init() {
 
   // easter egg: pull the card past the straps' reach and they flush red with the strain, cooling off once let go
   const strapC = C.slice(0, 2 * UNIT.ropeSegments + 1);   // the two straps and the clip link, in creation order
-  const strapBase = strapMat.color.clone(), strapHot = new THREE.Color(0xd41f2f);
+  const strapBase = strapMat.color.clone(), strapHot = new THREE.Color(0x8e1016);   // a deep, dark red
   let heat = 0;
   function strain() {
     let over = 0, rest = 0;
@@ -152,7 +152,7 @@ async function init() {
     if (heat < 0.001) heat = 0;
     const t = Math.pow(heat, 1.6);                             // perceptual: dark red-brown first, full red only when really hauled on
     strapMat.color.copy(strapBase).lerp(strapHot, t);
-    strapMat.emissive.setRGB(0.07 * t, 0.004 * t, 0.004 * t);
+    strapMat.emissive.setRGB(0.025 * t, 0, 0);
   }
 
   if (!reduceMotion) { // hang it slightly off to the side so it swings into place on load
