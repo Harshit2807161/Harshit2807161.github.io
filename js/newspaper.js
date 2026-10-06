@@ -5,9 +5,10 @@ import * as THREE from 'three';
 const press = document.querySelector('.press');
 const canvas = press && press.querySelector('canvas');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const TITLE = 'The Dhankhar Dispatch';
+const TITLE = 'The Daily Prophet';
 const PW = 1, PH = 1.36;                      // page size in world units
 const TEX_W = 880, TEX_H = Math.round(TEX_W * PH / PW);
+const OWL = { x: TEX_W - 58 - 40, y: 86, s: 0.82 };   // the delivery owl perches on the masthead rule
 const INK = '#2a2318', PAPER = '#e8dcc3';
 
 if (canvas && !matchMedia('(max-width: 479px)').matches) {
@@ -154,25 +155,37 @@ async function init() {
   press.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { flip(1); e.preventDefault(); } if (e.key === 'ArrowLeft') { flip(-1); e.preventDefault(); } });
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   let downAt = null;
-  const hitSide = (e) => {
+  const hitAt = (e) => {
     const r = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    const hits = ray.intersectObjects([leftPage, rightPage], false);
-    return hits.length ? (hits[0].object === rightPage ? 1 : -1) : 0;
+    const h = ray.intersectObjects([leftPage, rightPage], false)[0];
+    if (!h) return { side: 0, owl: false };
+    const owl = spread === 0 && h.object === leftPage && h.uv && Math.abs(h.uv.x * TEX_W - OWL.x) < 34 && (1 - h.uv.y) * TEX_H < OWL.y + 6;
+    return { side: h.object === rightPage ? 1 : -1, owl };
   };
+  const hitSide = (e) => hitAt(e).side;
+  // the easter egg: the owl blinks and asks for its fee
+  const front = pages[0].getContext('2d'), strip = front.getImageData(0, 0, pages[0].width, Math.round(OWL.y * S + 8 * S));
+  let owlTimer = 0;
+  function hoot() {
+    if (owlTimer) return;
+    const paint = (blink, say) => { front.putImageData(strip, 0, 0); front.save(); front.globalCompositeOperation = 'source-over'; drawOwl(front, OWL.x, OWL.y, OWL.s, blink, say); front.restore(); rule(front, 58, TEX_W - 58, OWL.y, 1.2, 0.6); textures[0].needsUpdate = true; dirty = true; };
+    paint(true, 'Five Knuts, please.');
+    owlTimer = setTimeout(() => { paint(false, 'Five Knuts, please.'); owlTimer = setTimeout(() => { paint(false, ''); owlTimer = 0; }, 1400); }, 260);
+  }
   canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
   canvas.addEventListener('pointerup', (e) => {
     if (!downAt) return; const moved = Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]); downAt = null;
-    if (moved < 6) { const s = hitSide(e); if (s) flip(s); }
+    if (moved < 6) { const h = hitAt(e); if (h.owl) hoot(); else if (h.side) flip(h.side); }
   });
   const tilt = { x: 0, y: 0, tx: 0, ty: 0 };
   canvas.addEventListener('pointermove', (e) => {
     const r = canvas.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
     tilt.tx = -py * 0.07; tilt.ty = px * 0.09;
-    const s = hitSide(e);
-    canvas.style.cursor = (s === 1 && spread < spreads - 1) || (s === -1 && spread > 0) ? 'pointer' : '';
+    const h = hitAt(e), s = h.side;
+    canvas.style.cursor = h.owl || (s === 1 && spread < spreads - 1) || (s === -1 && spread > 0) ? 'pointer' : '';
   });
   canvas.addEventListener('pointerleave', () => { tilt.tx = 0; tilt.ty = 0; });
 
@@ -353,6 +366,37 @@ function printed(ctx, image, x, y, w, h) {
   ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.drawImage(off, x, y, w, h); ctx.restore();
   ctx.save(); ctx.strokeStyle = INK; ctx.globalAlpha = 0.55; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1); ctx.restore();
 }
+// A snowy owl, drawn in ink, feet on (x, y); s scales a 100-unit design. blink closes the eyes; say prints a line of speech.
+function drawOwl(ctx, x, y, s, blink, say) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const body = () => { ctx.beginPath(); ctx.moveTo(0, -100); ctx.bezierCurveTo(22, -100, 34, -84, 34, -66); ctx.bezierCurveTo(34, -40, 30, -14, 14, -4); ctx.quadraticCurveTo(0, 1, -14, -4); ctx.bezierCurveTo(-30, -14, -34, -40, -34, -66); ctx.bezierCurveTo(-34, -84, -22, -100, 0, -100); ctx.closePath(); };
+  // feet first, gripping the rule
+  ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.globalAlpha = 0.9;
+  for (const fx of [-9, 9]) for (const dx of [-4, 0, 4]) { ctx.beginPath(); ctx.moveTo(fx, -5); ctx.lineTo(fx + dx, 2.5); ctx.stroke(); }
+  // body: pale with a soft shaded edge, ink outline
+  body(); const g = ctx.createRadialGradient(-12, -72, 6, 0, -56, 62); g.addColorStop(0, '#fffdf7'); g.addColorStop(1, '#cdbf9f'); ctx.fillStyle = g; ctx.fill();
+  ctx.globalAlpha = 1; ctx.lineWidth = 2; ctx.stroke();
+  // barring and the folded wings, kept inside the body
+  ctx.save(); body(); ctx.clip();
+  ctx.globalAlpha = 0.55; ctx.lineWidth = 1.5;
+  for (let r = 0; r < 6; r++) for (let c = -2; c <= 2; c++) { const bx = c * 9 + (r % 2 ? 4.5 : 0), by = -46 + r * 7.5; ctx.beginPath(); ctx.moveTo(bx - 3, by); ctx.lineTo(bx, by + 2.2); ctx.lineTo(bx + 3, by); ctx.stroke(); }
+  ctx.globalAlpha = 0.8; ctx.lineWidth = 1.8;
+  for (const m of [-1, 1]) { ctx.beginPath(); ctx.moveTo(m * 31, -60); ctx.quadraticCurveTo(m * 38, -30, m * 12, -6); ctx.stroke(); }
+  ctx.restore();
+  // face: the heart-shaped disc, eyes, beak
+  ctx.globalAlpha = 0.55; ctx.lineWidth = 1.6;
+  for (const m of [-1, 1]) { ctx.beginPath(); ctx.arc(m * 12, -69, 13.5, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  for (const m of [-1, 1]) {
+    if (blink) { ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(m * 12 - 7, -70); ctx.quadraticCurveTo(m * 12, -63, m * 12 + 7, -70); ctx.stroke(); continue; }
+    ctx.beginPath(); ctx.arc(m * 12, -70, 8.5, 0, Math.PI * 2); ctx.fillStyle = '#fffdf7'; ctx.fill(); ctx.lineWidth = 1.6; ctx.stroke();
+    ctx.beginPath(); ctx.arc(m * 12, -70, 4.2, 0, Math.PI * 2); ctx.fillStyle = INK; ctx.fill();
+    ctx.beginPath(); ctx.arc(m * 12 - 1.6, -71.8, 1.3, 0, Math.PI * 2); ctx.fillStyle = '#fffdf7'; ctx.fill();
+  }
+  ctx.beginPath(); ctx.moveTo(-3.2, -62); ctx.lineTo(3.2, -62); ctx.lineTo(0, -53.5); ctx.closePath(); ctx.fillStyle = INK; ctx.fill();
+  if (say) { ctx.fillStyle = INK; ctx.globalAlpha = 0.85; ctx.textAlign = 'right'; ctx.font = `italic 400 ${Math.round(26 / s)}px Gelasio, Georgia, serif`; ctx.fillText(say, -46, -52); }
+  ctx.restore();
+}
 function runningHead(ctx, W, margin, n) {
   ctx.save(); ctx.globalAlpha = 0.75; smallCaps(ctx, TITLE, margin, 66, 17, 0.2); ctx.textAlign = 'right'; smallCaps(ctx, `Page ${n}`, W - margin, 66, 17, 0.2); ctx.restore();
   rule(ctx, margin, W - margin, 84, 2.2, 0.85); rule(ctx, margin, W - margin, 90, 1, 0.85);
@@ -381,7 +425,7 @@ function paginate(items) {
   let lead, frontTop, inner, avail, P;
   const measure = () => {
     lead = measureItem(probe, items[0], W - 2 * margin, true);
-    frontTop = 262 + lead.h + 18;
+    frontTop = 286 + lead.h + 18;
     inner = items.slice(1).map(it => measureItem(probe, it, colW, false));
     avail = (p) => bottom - (p === 0 ? frontTop : 122);
     return inner.reduce((a, m) => a + m.h, 0);
@@ -417,15 +461,16 @@ function paginate(items) {
     const { c, ctx } = newPage(side);
     let top;
     if (p === 0) {
-      rule(ctx, margin, W - margin, 60, 1.2, 0.6);
+      rule(ctx, margin, W - margin, OWL.y, 1.2, 0.6);
       ctx.save(); let mh = 96; ctx.font = `400 ${mh}px UnifrakturMaguntia, Gelasio, serif`; const tw = ctx.measureText(TITLE).width, maxW = W - 2 * margin - 10; if (tw > maxW) { mh = Math.floor(mh * maxW / tw); ctx.font = `400 ${mh}px UnifrakturMaguntia, Gelasio, serif`; }
-      ctx.textAlign = 'center'; ctx.fillText(TITLE, W / 2, 158); ctx.restore();
-      rule(ctx, margin, W - margin, 184, 1.2, 0.6);
+      ctx.textAlign = 'center'; ctx.fillText(TITLE, W / 2, 182); ctx.restore();
+      rule(ctx, margin, W - margin, 208, 1.2, 0.6);
       const now = new Date();
-      ctx.save(); ctx.textAlign = 'center'; ctx.globalAlpha = 0.8; smallCaps(ctx, `Vol. ${roman(now.getFullYear() - 2020)} · San Diego, California · ${now.toLocaleString('en-US', { month: 'long', year: 'numeric' })} · Price: one coffee`, W / 2, 214, 17, 0.2); ctx.restore();
-      rule(ctx, margin, W - margin, 232, 3, 0.85); rule(ctx, margin, W - margin, 239, 1, 0.85);
-      const end = drawItem(ctx, items[0], lead, margin, 262, W - 2 * margin);
+      ctx.save(); ctx.textAlign = 'center'; ctx.globalAlpha = 0.8; smallCaps(ctx, `Vol. ${roman(now.getFullYear() - 2020)} · San Diego, California · ${now.toLocaleString('en-US', { month: 'long', year: 'numeric' })} · Price: 5 Knuts`, W / 2, 238, 17, 0.2); ctx.restore();
+      rule(ctx, margin, W - margin, 256, 3, 0.85); rule(ctx, margin, W - margin, 263, 1, 0.85);
+      const end = drawItem(ctx, items[0], lead, margin, 286, W - 2 * margin);
       rule(ctx, margin, W - margin, end - 6, 1.2, 0.6);
+      drawOwl(ctx, OWL.x, OWL.y, OWL.s, false);
       top = frontTop;
     } else { runningHead(ctx, W, margin, p + 1); top = 122; }
     const cols = [margin, margin + colW + gutter];
