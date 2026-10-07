@@ -11,8 +11,9 @@ const TEX_W = 880, TEX_H = Math.round(TEX_W * PH / PW);
 const OWL = { x: TEX_W - 58 - 40, y: 86, s: 0.82 };   // the delivery owl perches on the masthead rule
 const INK = '#2a2318', PAPER = '#e8dcc3';
 
-if (canvas && !matchMedia('(max-width: 479px)').matches) {
-  init().catch(err => { console.warn('newspaper: using the plain list', err); press.classList.remove('live'); });
+if (canvas && matchMedia('(max-width: 479px)').matches) press.classList.add('plain');
+else if (canvas) {
+  init().catch(err => { console.warn('newspaper: using the plain list', err); press.classList.remove('live'); press.classList.add('plain'); });
 }
 
 async function init() {

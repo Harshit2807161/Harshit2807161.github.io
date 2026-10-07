@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-<script>if ("scrollRestoration" in history) history.scrollRestoration = "manual";</script>
+<script>document.documentElement.classList.add("js");if ("scrollRestoration" in history) history.scrollRestoration = "manual";</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,8 +45,6 @@ a{color:inherit;text-decoration:none}
 button{font:inherit}
 ::selection{background:#dcd1ff}
 a:focus-visible{outline-offset:8px;outline:2px solid #7950ef}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 img{display:block}
 
 /* ---------- skip link ---------- */
@@ -169,10 +167,12 @@ img{display:block}
 /* news: the newspaper */
 .press{position:relative;margin:0 var(--page-gutter);outline:none}
 .press:focus-visible{outline:2px solid #7950ef;outline-offset:8px;border-radius:8px}
-.press canvas{display:none;width:100%;height:min(68vh,660px)}
-.press.live canvas{display:block}
-.press-bar{display:none;align-items:center;justify-content:center;gap:18px;margin-top:4px;font-size:15px;color:#6f6c78}
-.press.live .press-bar{display:flex}
+.press canvas{display:none;width:100%;height:min(68vh,660px);opacity:0;transition:opacity .7s ease}
+.js .press:not(.plain) canvas{display:block}
+.press.live canvas{opacity:1}
+.press-bar{display:none;visibility:hidden;align-items:center;justify-content:center;gap:18px;margin-top:4px;font-size:15px;color:#6f6c78}
+.js .press:not(.plain) .press-bar{display:flex}
+.press.live .press-bar{visibility:visible}
 .press-bar button{font:inherit;color:var(--ink);background:0 0;border:1px solid #d9d7de;border-radius:999px;padding:6px 14px;cursor:pointer;transition:background .15s,border-color .15s}
 .press-bar button:hover{background:#fff;border-color:#b9b6c2}
 .press-bar button:disabled{opacity:.35;cursor:default;background:0 0}
@@ -181,9 +181,42 @@ img{display:block}
 .news-list li{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid #eaeaea;font-size:16px;line-height:1.4;letter-spacing:-.01em}
 .news-list time{color:#6b6873;font-variant-numeric:tabular-nums}
 .news-list b{font-weight:500}
-@media (min-width:701px){.press.live .news-list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
-@media (max-width:700px){.press canvas{height:auto;aspect-ratio:4/3}.press.live .news-list{margin-top:28px}}
+@media (min-width:701px){.js .press:not(.plain) .news-list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
+@media (max-width:700px){.press canvas{height:auto;aspect-ratio:4/3}.js .press:not(.plain) .news-list{margin-top:28px}}
 @media (max-width:479px){.press canvas,.press-bar,#news .kicker{display:none!important}}
+/* ---- skills wall ---- */
+#skills{--card-w:104px;--card-h:124px;--gap:10px;--wall-h:min(760px,84vh);--panel:#f0eff3}
+.wall{position:relative;height:var(--wall-h);margin:0 var(--page-gutter);border-radius:24px;background:var(--panel);border:1px solid #e9e8ed;overflow:hidden;isolation:isolate}
+.wall::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(120% 80% at 50% 50%,transparent 62%,rgba(240,239,243,.92) 100%),linear-gradient(90deg,var(--panel),transparent 9%,transparent 91%,var(--panel))}
+.wall-grid{position:absolute;left:-12%;top:-8%;width:124%;height:116%;display:flex;flex-direction:column;justify-content:center;gap:var(--gap);transform:perspective(1800px) rotateX(13deg) rotateZ(-5deg);transform-origin:50% 50%}
+.wrow{position:relative;display:flex;width:max-content;margin:0;padding:0;list-style:none;animation:wall-slide var(--dur,80s) linear infinite;animation-direction:var(--dir,normal)}
+.wrow:nth-child(even){margin-left:calc(-.5*var(--card-w))}
+.wrow.row-focus{z-index:5}
+@keyframes wall-slide{to{transform:translateX(-50%)}}
+.skill{position:relative;flex:0 0 var(--card-w);height:var(--card-h);margin-right:var(--gap);border-radius:11px;overflow:hidden;cursor:pointer;background:#fff;border:1px solid rgba(20,18,30,.07);box-shadow:0 1px 2px rgba(20,18,30,.04),0 14px 30px rgba(20,18,30,.09);transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .45s,opacity .45s,box-shadow .45s}
+.skill::before{content:"";position:absolute;inset:0;background:radial-gradient(110% 70% at 50% -12%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 62%)}
+.sk-tag{position:absolute;left:10px;top:9px;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#9a97a4}
+.sk-logo{position:absolute;left:50%;top:43%;width:40px;height:40px;transform:translate(-50%,-50%);background:var(--mark);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+.sk-word{position:absolute;left:8px;right:8px;top:41%;transform:translateY(-50%);text-align:center;font-weight:700;font-size:calc(var(--ws,28px)*.72);line-height:1;color:var(--mark);letter-spacing:-.02em}
+.sk-name{position:absolute;left:8px;right:8px;bottom:10px;text-align:center;font-size:12px;color:#141318;line-height:1.2}
+.sk-name small{display:block;margin-top:2px;font-size:9px;letter-spacing:.06em;color:#8d8a97}
+.wall:not(.has-focus):hover .wrow{animation-play-state:paused}
+.wall:not(.has-focus) .wrow:hover{z-index:5}
+.wall:not(.has-focus) .skill:hover,.skill.is-focus{transform:scale(1.22);z-index:3;box-shadow:0 26px 54px rgba(20,18,30,.22),0 0 0 1.5px var(--mark),0 0 40px color-mix(in srgb,var(--brand) 32%,transparent)}
+.wall:not(.has-focus):hover .skill:not(:hover),.wall.has-focus .skill:not(.is-focus){filter:blur(3px);opacity:.55}
+.wall.has-focus .wrow{animation-play-state:paused}
+@media (hover:none){.wall:not(.has-focus):hover .wrow{animation-play-state:running}.wall:not(.has-focus):hover .skill:not(:hover){filter:none;opacity:1}.wall:not(.has-focus) .skill:hover{transform:none;box-shadow:0 1px 2px rgba(20,18,30,.04),0 14px 30px rgba(20,18,30,.09)}}
+@media (prefers-reduced-motion:reduce){.wrow{animation:none}}
+@media (max-width:900px){#skills{--card-w:90px;--card-h:112px;--gap:10px;--wall-h:min(640px,80vh)}.sk-logo{width:34px;height:34px}.sk-word{font-size:calc(var(--ws,28px)*.62)}.sk-name{font-size:11px;bottom:8px}}
+@media (max-width:600px){#skills{--card-w:76px;--card-h:96px;--gap:8px;--wall-h:min(540px,78vh)}.wall{margin:0 24px;border-radius:18px}.wall-grid{transform:perspective(1200px) rotateX(11deg) rotateZ(-4deg)}.sk-logo{width:28px;height:28px;top:40%}.sk-word{font-size:calc(var(--ws,28px)*.5)}.sk-name{font-size:9.5px;bottom:6px;left:5px;right:5px}.sk-name small{display:none}.sk-tag{font-size:7px;left:7px;top:6px}}
+
+/* ---- motion: sections settle in as they arrive ---- */
+@media (prefers-reduced-motion:no-preference){
+  .js .rv{opacity:0;transform:translateY(28px);filter:blur(8px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--rv-d,0s)}
+  .js .rv.rv-panel{transform:translateY(22px) scale(.985)}
+  .js .rv.in{opacity:1;transform:none;filter:none}
+}
+
 
 /* experience rows */
 .xp{display:grid;grid-template-columns:64px minmax(240px,320px) 1fr;gap:28px;padding:32px var(--page-gutter);border-top:1px solid #eaeaea;align-items:start;position:relative;isolation:isolate}
@@ -335,7 +368,7 @@ dialog.about::backdrop{background:0 0}
 <main>
   <section class="hero" aria-label="Introduction">
     <p class="intro">I like researching and building<br>self-learning systems. <button type="button" class="more" aria-haspopup="dialog" id="moreBtn">[more]</button></p>
-    <nav class="jump" aria-label="Sections"><a href="#news">News</a><a href="#experience">Experience</a><a href="#publications">Publications</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="data/Resume.pdf" target="_blank" rel="noopener">Résumé ↗</a></nav>
+    <nav class="jump" aria-label="Sections"><a href="#news">News</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#publications">Publications</a><a href="#projects">Projects</a><a href="#contact">Contact</a><a href="data/Resume.pdf" target="_blank" rel="noopener">Résumé ↗</a></nav>
     <p class="education">Currently MS in Computer Science<br>&amp; RL research @ UC San Diego</p>
 
     <h1 class="sr-only">Harshit Dhankhar</h1>
@@ -397,8 +430,8 @@ dialog.about::backdrop{background:0 0}
   </section>
 
 <section class="block" id="news" aria-labelledby="news-h">
-  <div class="sec-head"><h2 id="news-h">News</h2><p class="kicker">Flip through the latest. Click a page or use the arrows to turn it.</p></div>
-  <div class="press" tabindex="0" aria-label="A newspaper with recent news. Use the arrow keys to turn pages.">
+  <div class="sec-head rv"><h2 id="news-h">News</h2><p class="kicker">Flip through the latest. Click a page or use the arrows to turn it.</p></div>
+  <div class="press rv rv-panel" tabindex="0" aria-label="A newspaper with recent news. Use the arrow keys to turn pages.">
     <canvas aria-hidden="true"></canvas>
     <div class="press-bar"><button type="button" class="press-prev">‹ Previous</button><span class="press-page" aria-live="polite"></span><button type="button" class="press-next">Next ›</button></div>
     <ol class="news-list">
@@ -432,41 +465,101 @@ dialog.about::backdrop{background:0 0}
   </div>
 </section>
 
+<section class="block" id="skills" aria-labelledby="skills-h">
+  <div class="sec-head rv"><h2 id="skills-h">Skills</h2><p class="kicker">The wall keeps rolling. Hover a card, or click to hold it; click again to let go.</p></div>
+  <div class="wall rv rv-panel" aria-label="Skills, arranged as a rolling wall of cards">
+    <div class="wall-grid">
+      <ul class="wrow" data-speed="26" aria-label="Language">
+        <li class="skill" style="--brand:#3776AB;--mark:#3776AB;--logo:url(images/skills/python.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">Python</span></li>
+        <li class="skill" style="--brand:#00599C;--mark:#00599C;--logo:url(images/skills/cplusplus.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">C++</span></li>
+        <li class="skill" style="--brand:#A8B9CC;--mark:#8F9DAD;--logo:url(images/skills/c.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">C</span></li>
+        <li class="skill" style="--brand:#F89820;--mark:#DE871B;--logo:url(images/skills/openjdk.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">Java</span></li>
+        <li class="skill" style="--brand:#3178C6;--mark:#3178C6;--logo:url(images/skills/typescript.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">TypeScript</span></li>
+        <li class="skill" style="--brand:#F7DF1E;--mark:#AE9D12;--logo:url(images/skills/javascript.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">JavaScript</span></li>
+        <li class="skill type" style="--brand:#E16737;--mark:#E16737;--ws:27px"><span class="sk-tag">Language</span><span class="sk-word">MATLAB</span><span class="sk-name">MathWorks</span></li>
+        <li class="skill type" style="--brand:#E38C00;--mark:#DD8800;--ws:32px"><span class="sk-tag">Language</span><span class="sk-word">SQL</span><span class="sk-name">Query language</span></li>
+        <li class="skill" style="--brand:#4EAA25;--mark:#4EAA25;--logo:url(images/skills/gnubash.svg)"><span class="sk-tag">Language</span><span class="sk-logo"></span><span class="sk-name">Bash</span></li>
+      </ul>
+      <ul class="wrow" data-speed="34" aria-label="ML">
+        <li class="skill" style="--brand:#EE4C2C;--mark:#EE4C2C;--logo:url(images/skills/pytorch.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">PyTorch</span></li>
+        <li class="skill" style="--brand:#F7931E;--mark:#E1851A;--logo:url(images/skills/scikitlearn.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">scikit-learn</span></li>
+        <li class="skill" style="--brand:#4DABCF;--mark:#4BA6C9;--logo:url(images/skills/numpy.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">NumPy</span></li>
+        <li class="skill" style="--brand:#9B6DFF;--mark:#9B6DFF;--logo:url(images/skills/pandas.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">pandas</span></li>
+        <li class="skill" style="--brand:#FFD21E;--mark:#BA9813;--logo:url(images/skills/huggingface.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">Hugging Face<small>PEFT · RLHF</small></span></li>
+        <li class="skill" style="--brand:#FFBE00;--mark:#C79300;--logo:url(images/skills/weightsandbiases.svg)"><span class="sk-tag">ML</span><span class="sk-logo"></span><span class="sk-name">Weights & Biases</span></li>
+      </ul>
+      <ul class="wrow" data-speed="22" aria-label="Agents">
+        <li class="skill" style="--brand:#2F9E9E;--mark:#2F9E9E;--logo:url(images/skills/langgraph.svg)"><span class="sk-tag">Agents</span><span class="sk-logo"></span><span class="sk-name">LangGraph</span></li>
+        <li class="skill" style="--brand:#7C8CF8;--mark:#7C8CF8;--logo:url(images/skills/modelcontextprotocol.svg)"><span class="sk-tag">Agents</span><span class="sk-logo"></span><span class="sk-name">MCP</span></li>
+        <li class="skill" style="--brand:#10A37F;--mark:#10A37F;--logo:url(images/skills/openai.svg)"><span class="sk-tag">Agents</span><span class="sk-logo"></span><span class="sk-name">OpenAI<small>Codex · SDK</small></span></li>
+        <li class="skill" style="--brand:#D97757;--mark:#D97757;--logo:url(images/skills/claude.svg)"><span class="sk-tag">Agents</span><span class="sk-logo"></span><span class="sk-name">Claude<small>Code · SDK</small></span></li>
+        <li class="skill type" style="--brand:#FF9900;--mark:#E18600;--ws:27px"><span class="sk-tag">Agents</span><span class="sk-word">Bedrock</span><span class="sk-name">Amazon Bedrock</span></li>
+        <li class="skill type" style="--brand:#14B8A6;--mark:#12AE9D;--ws:32px"><span class="sk-tag">Agents</span><span class="sk-word">RAG</span><span class="sk-name">Retrieval & generation</span></li>
+        <li class="skill type" style="--brand:#E9B949;--mark:#BE963A;--ws:22px"><span class="sk-tag">Agents</span><span class="sk-word">Open<br>Hands</span><span class="sk-name">Coding agents</span></li>
+        <li class="skill type" style="--brand:#0467DF;--mark:#0467DF;--ws:27px"><span class="sk-tag">Agents</span><span class="sk-word">FAISS</span><span class="sk-name">Vector search</span></li>
+        <li class="skill type" style="--brand:#6366F1;--mark:#6366F1;--ws:22px"><span class="sk-tag">Agents</span><span class="sk-word">Pinecone</span><span class="sk-name">Vector database</span></li>
+        <li class="skill type" style="--brand:#F97316;--mark:#F97316;--ws:27px"><span class="sk-tag">Agents</span><span class="sk-word">RAGAS</span><span class="sk-name">RAG evaluation</span></li>
+        <li class="skill" style="--brand:#3A3A42;--mark:#3A3A42;--logo:url(images/skills/ollama.svg)"><span class="sk-tag">Agents</span><span class="sk-logo"></span><span class="sk-name">Ollama</span></li>
+      </ul>
+      <ul class="wrow" data-speed="30" aria-label="Infra">
+        <li class="skill" style="--brand:#FF9900;--mark:#E18600;--logo:url(images/skills/amazonwebservices.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">AWS</span></li>
+        <li class="skill" style="--brand:#4285F4;--mark:#4285F4;--logo:url(images/skills/googlecloud.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">GCP</span></li>
+        <li class="skill" style="--brand:#2496ED;--mark:#2496ED;--logo:url(images/skills/docker.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">Docker</span></li>
+        <li class="skill" style="--brand:#326CE5;--mark:#326CE5;--logo:url(images/skills/kubernetes.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">Kubernetes</span></li>
+        <li class="skill type" style="--brand:#2088FF;--mark:#2088FF;--ws:27px"><span class="sk-tag">Infra</span><span class="sk-word">CI/CD</span><span class="sk-name">Pipelines & releases</span></li>
+        <li class="skill" style="--brand:#F05032;--mark:#F05032;--logo:url(images/skills/git.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">Git</span></li>
+        <li class="skill" style="--brand:#F46800;--mark:#F46800;--logo:url(images/skills/grafana.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">Grafana</span></li>
+        <li class="skill" style="--brand:#E6522C;--mark:#E6522C;--logo:url(images/skills/prometheus.svg)"><span class="sk-tag">Infra</span><span class="sk-logo"></span><span class="sk-name">Prometheus</span></li>
+      </ul>
+      <ul class="wrow" data-speed="24" aria-label="Data & web">
+        <li class="skill" style="--brand:#4169E1;--mark:#4169E1;--logo:url(images/skills/postgresql.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">PostgreSQL</span></li>
+        <li class="skill" style="--brand:#47A248;--mark:#47A248;--logo:url(images/skills/mongodb.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">MongoDB</span></li>
+        <li class="skill" style="--brand:#FF4438;--mark:#FF4438;--logo:url(images/skills/redis.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">Redis</span></li>
+        <li class="skill" style="--brand:#009688;--mark:#009688;--logo:url(images/skills/fastapi.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">FastAPI</span></li>
+        <li class="skill type" style="--brand:#22C55E;--mark:#1EB355;--ws:32px"><span class="sk-tag">Data & web</span><span class="sk-word">REST</span><span class="sk-name">RESTful APIs</span></li>
+        <li class="skill" style="--brand:#5FA04E;--mark:#5FA04E;--logo:url(images/skills/nodedotjs.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">Node.js</span></li>
+        <li class="skill" style="--brand:#61DAFB;--mark:#49A7C1;--logo:url(images/skills/react.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">React</span></li>
+        <li class="skill" style="--brand:#0A9EDC;--mark:#0A9EDC;--logo:url(images/skills/pytest.svg)"><span class="sk-tag">Data & web</span><span class="sk-logo"></span><span class="sk-name">Pytest</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="experience" aria-labelledby="experience-h" tabindex="-1">
-  <div class="sec-head"><h2 id="experience-h">Experience</h2></div>
-  <h3 class="sub">Professional</h3>
-      <article class="xp">
+  <div class="sec-head rv"><h2 id="experience-h">Experience</h2></div>
+  <h3 class="sub rv">Professional</h3>
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/logos/aws.svg" alt="" loading="lazy"></div>
         <div><h4>Amazon Web Services</h4><p class="role">Software Development Engineer Intern</p><p class="meta">Jun 2026 – Sep 2026 · Seattle, WA</p></div>
         <ul><li>Engineered an operations agent hosted on OpenClaw that autonomously generates pipeline-health, dashboard-anomaly and ticket-queue reports and delivers them to Slack, cutting on-call review time from 4+ hours to 30 minutes.</li><li>Deployed an auto-incident-response system for Sev-2 tickets: an RCA agent runs a multi-hypothesis investigation loop and posts root cause and customer impact within 15 minutes.</li></ul>
       </article>
-      <article class="xp">
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/anyfeast_logo.webp" alt="" loading="lazy" width="240" height="240"></div>
         <div><h4>AnyFeast</h4><p class="role">AI Engineer</p><p class="meta">Feb 2025 – Aug 2025 · London, UK (remote)</p></div>
         <ul><li>Shipped a zero-touch ETL pipeline that extracts recipe attributes with agentic AI and enriches instructions through a LangGraph-powered RAG module, reducing manual effort by over 90%.</li><li>Replaced popularity sorting with a hybrid-filtering recommender, lifting click-through rate by 30%, validated with A/B tests and Azure Monitor.</li></ul>
       </article>
-  <h3 class="sub">Research</h3>
-      <article class="xp">
+  <h3 class="sub rv">Research</h3>
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/logos/ucsd.png" alt="" loading="lazy" width="159" height="160"></div>
         <div><h4>UC San Diego · Prof. Xiaolong Wang's lab</h4><p class="role">Graduate Research Assistant, with Nicklas Hansen</p><p class="meta">Oct 2025 – present · San Diego, CA</p></div>
         <ul><li>HiGym: a high-dimensional continuous-control benchmark built on DMControl that isolates action-space scaling from 2 to 512 degrees of freedom by splitting joints while keeping objectives, dynamics, mass and collision geometry fixed, across six embodiment families.</li><li>Found that model-based agents (TD-MPC2, TD-M(PC)²) degrade far less than model-free PPO as dimensionality grows, with a policy-constraint loss keeping value estimates in check. Under review at NeurIPS 2026.</li></ul>
       </article>
-      <article class="xp">
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/psl_logo.png" alt="" loading="lazy" width="798" height="114"></div>
         <div><h4>LAMSADE, Université Paris Dauphine – PSL</h4><p class="role">AI Research Intern</p><p class="meta">May 2024 – Oct 2024 · Paris, France</p><p class="adv">Advisor: Prof. Tristan Cazenave</p></div>
         <ul><li>Developed a Nested Monte Carlo Search router for qubit routing in quantum circuits, cutting circuit depth by 10.55% against IBM Qiskit and Google Cirq baselines.</li><li>Mutex-locked qubit scheduling, combinatorial SWAP-set construction and action-masked playout pruning keep exploration sample-efficient and cut average runtime by 37.17%. First-author paper presented at AAAI 2025 (QC+AI), Philadelphia.</li></ul>
       </article>
-      <article class="xp">
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/logos/iitp.png" alt="" loading="lazy" width="160" height="160"></div>
         <div><h4>AI-NLP-ML Lab, IIT Patna</h4><p class="role">Research Affiliate · Bachelor's thesis</p><p class="meta">Aug 2023 – May 2025 · Patna, India</p><p class="adv">Advisors: Prof. Asif Ekbal, Dr. Y. M. Tripathi</p></div>
         <ul><li>ProNMT: a reward framework that combines quality-estimation models with pronoun generation likelihood for feedback training of English→German translation, improving pronoun translation accuracy and overall COMET (24.06% over the baseline) without human feedback.</li><li>Accepted at WMT 2026; an earlier version became my bachelor's thesis.</li></ul>
       </article>
-      <article class="xp">
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/logos/iitp.png" alt="" loading="lazy" width="160" height="160"></div>
         <div><h4>Advanced Computing Lab, IIT Patna</h4><p class="role">Undergraduate Researcher</p><p class="meta">Jul 2023 – Sep 2024 · Patna, India</p><p class="adv">Advisor: Prof. Rajiv Misra</p></div>
         <ul><li>Deep RL for EV charging-station routing: a custom Gym environment of Xi'an and a PPO agent that cut cumulative driver cost by 74.19% across baseline strategies, published in Sustainable Energy, Grids and Networks (2026).</li><li>Attention-LSTM forecasting of CO₂ emissions across SAARC countries (IEEE BigData 2023) and a transformer + DRL scheduler for in-home EV charging.</li></ul>
       </article>
-      <article class="xp">
+      <article class="xp rv">
         <div class="xp-logo"><img src="images/logos/iiith.png" alt="" loading="lazy" width="160" height="154"></div>
         <div><h4>Computer Systems Group, IIIT Hyderabad</h4><p class="role">Research Intern</p><p class="meta">Dec 2022 – Dec 2023 · Hyderabad, India</p><p class="adv">Advisor: Dr. Tejas Bodas</p></div>
         <ul><li>QGI: tabular and deep Q-learning algorithms that learn Gittins indices online for multi-armed bandits with ~50% less memory and ~10% lower runtime than prior methods, applied to pre-emptive job scheduling with unknown service times. Published at WiOpt 2025.</li></ul>
@@ -474,9 +567,9 @@ dialog.about::backdrop{background:0 0}
 </section>
 
 <section class="block" id="publications" aria-labelledby="publications-h">
-  <div class="sec-head"><h2 id="publications-h">Publications</h2><p class="kicker">Hover or tab to a row to see the paper's figures.</p></div>
+  <div class="sec-head rv"><h2 id="publications-h">Publications</h2><p class="kicker">Hover or tab to a row to see the paper's figures.</p></div>
   <div class="rows pubs">
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Balancing Global Quality and Pronoun-Specific Feedback for Context-Aware Machine Translation <span class="status ok">accepted</span></h3>
           <p class="authors"><b>Harshit Dhankhar</b>, Baban Gain, Asif Ekbal, Y. M. Tripathi</p>
@@ -485,7 +578,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/work/pronmt/example.png" alt="" loading="lazy" class="preview preview-0" width="800" height="196"><img src="images/pronmt.png" alt="" loading="lazy" class="preview preview-1" width="486" height="465"><img src="images/work/pronmt/batchwise_comet.png" alt="" loading="lazy" class="preview preview-2" width="567" height="432"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>HiGym: Learning to Act in High-Dimensional Spaces <span class="status review">under review</span></h3>
           <p class="authors">Authors withheld during double-blind review</p>
@@ -494,7 +587,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-0" width="800" height="365"><img src="images/work/higym/scaling_curves.png" alt="" loading="lazy" class="preview preview-1" width="800" height="311"><img src="images/work/higym/avg_ranking.png" alt="" loading="lazy" class="preview preview-2" width="800" height="393"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Optimizing Electric Vehicle Charging Routes with Deep Reinforcement Learning Considering Driver Preferences</h3>
           <p class="authors">Shivendu Mishra, Anurag Choubey, <b>Harshit Dhankhar</b>, Sri Vaibhav Devarasetty, Rajiv Misra</p>
@@ -503,7 +596,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Tabular and Deep Reinforcement Learning for Gittins Index</h3>
           <p class="authors"><b>Harshit Dhankhar</b>, Kshitij Mishra, Tejas Bodas</p>
@@ -512,7 +605,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/qgi_project.png" alt="" loading="lazy" class="preview preview-0" width="716" height="490"><img src="images/work/qgi/runtime_scaling.png" alt="" loading="lazy" class="preview preview-1" width="800" height="747"><img src="images/work/qgi/hyp_tuning.png" alt="" loading="lazy" class="preview preview-2" width="800" height="500"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Nested Qubit Routing</h3>
           <p class="authors"><b>Harshit Dhankhar</b>, Tristan Cazenave</p>
@@ -521,7 +614,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/work/nesq/nmc-one.jpg" alt="" loading="lazy" class="preview preview-0" width="800" height="338"><img src="images/nesq.png" alt="" loading="lazy" class="preview preview-1" width="621" height="625"><img src="images/work/nesq/random_circuit_depth_30_150_opt.png" alt="" loading="lazy" class="preview preview-2" width="800" height="480"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Analysis and Forecasting of Carbon Emission in SAARC Countries using Attention-based LSTM</h3>
           <p class="authors">Anil Verma, <b>Harshit Dhankhar</b>, Rajiv Misra, T. N. Singh, Om Prakash Dhakal</p>
@@ -530,7 +623,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/co2_saarc.png" alt="" loading="lazy" class="preview preview-0" width="595" height="791"><img src="images/work/co2/val_comp.png" alt="" loading="lazy" class="preview preview-1" width="618" height="484"><img src="images/work/co2/india.png" alt="" loading="lazy" class="preview preview-2" width="589" height="432"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h3>Enhancing In-Home EV Charging Optimization with Time Series Transformers and Policy-based DRL: A Multi-Timeframe Approach for Cost Reduction and User Satisfaction <span class="status review">under review</span></h3>
           <p class="authors">Shivendu Mishra, Anurag Choubey, <b>Harshit Dhankhar</b>, Sri Vaibhav Devarasetty, Rajiv Misra</p>
@@ -543,10 +636,10 @@ dialog.about::backdrop{background:0 0}
 </section>
 
 <section class="block" id="projects" aria-labelledby="projects-h">
-  <div class="sec-head"><h2 id="projects-h">Key projects</h2><p class="kicker">Hover or tab to a row for screenshots and figures.</p></div>
+  <div class="sec-head rv"><h2 id="projects-h">Key projects</h2><p class="kicker">Hover or tab to a row for screenshots and figures.</p></div>
   <div class="rows">
     <h3 class="cat">Agents &amp; LLM systems</h3>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>job-hunting-buddy</h4>
           <p>Phase 1 polls SimplifyJobs every 15 minutes (JobSpy hourly) for new-grad SWE and ML roles in the US and emails each genuinely new posting, with an idempotent ledger, conditional GETs and burst guards. Phase 2 prepares applications in the candidate's own browser through Greenhouse, Ashby, Workable and Lever adapters, and keeps every submission behind an explicit per-draft approval in a private Next.js + FastAPI dashboard with receipt-confirmed daily counts.</p>
@@ -592,7 +685,7 @@ dialog.about::backdrop{background:0 0}
         <div class="previews" aria-hidden="true"><img src="images/work/gen/rapidfire-rag.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
       </article>
     <h3 class="cat">Reinforcement learning &amp; control</h3>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>HiGym</h4>
           <p>A benchmark that isolates action-space scaling in continuous control: six DMControl embodiment families split from 2 to 512 degrees of freedom while objectives, dynamics and mass stay fixed. Shows that model-based TD-MPC2 and TD-M(PC)² degrade far less than PPO as dimensionality grows. With Nicklas Hansen, Prof. Xiaolong Wang's lab.</p>
@@ -601,7 +694,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/work/higym/quadruped-512.jpg" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="449"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="365"><img src="images/work/higym/walker-256.jpg" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="449"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>EV charging routes</h4>
           <p>A custom Gym environment of Xi'an's road and charger network where a PPO agent picks charging stations under queue, placement and price uncertainty, weighing distance against cost by driver preference. Cuts cumulative driver cost by 74.19% versus baseline routing strategies. Published in Sustainable Energy, Grids and Networks.</p>
@@ -610,7 +703,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>In-home EV charging</h4>
           <p>Transformer forecasters (PatchTST, Autoformer, Informer) read electricity-price history over several timeframes and feed DQN, DDPG and PPO schedulers that decide when to charge or discharge, cutting cost while keeping drivers satisfied in a vehicle-to-grid setting. Manuscript with Prof. Rajiv Misra's group at IIT Patna.</p>
@@ -620,7 +713,7 @@ dialog.about::backdrop{background:0 0}
         <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" loading="lazy" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" loading="lazy" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" loading="lazy" class="preview preview-2" width="800" height="400"></div>
       </article>
     <h3 class="cat">Products &amp; platforms</h3>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>Alloc8</h4>
           <p>Led a team of 8 to build the dorm-room allocation portal for 3,000 students across 1,400 rooms at IIT Patna, as Senior-Year Technical Secretary. MERN stack on a load-balanced VPS with 95%+ uptime under launch traffic, Redis locks for contention-free room picks, spherical k-means roommate pairing from free-text responses. Saves an estimated 200+ hours a year.</p>
@@ -629,7 +722,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/alloc8.png" alt="" loading="lazy" class="preview preview-0" width="562" height="361"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>Privy Notion</h4>
           <p>A collaborative workspace with real-time multi-user editing over Socket.IO: users sign in, share a workspace and edit the same document together. Next.js and Tailwind on the front end, Prisma with PostgreSQL behind it, Zod validation, JWT auth and NextAuth sessions.</p>
@@ -647,7 +740,7 @@ dialog.about::backdrop{background:0 0}
         </div></div>
         <div class="previews" aria-hidden="true"><img src="images/work/qtways/home.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="500"><img src="images/work/qtways/shop.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="500"><img src="images/work/gen/qtways.png" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="608"></div>
       </article>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>ProfessionPro</h4>
           <p>End-to-end NLP career guidance: parses and tokenizes résumés, classifies them into job domains with KNN from skills, education and experience, and pairs the result with a questionnaire for personalized suggestions in a web portal. Runner-up at Smart India Hackathon 2022, Visakhapatnam.</p>
@@ -657,7 +750,7 @@ dialog.about::backdrop{background:0 0}
         <div class="previews" aria-hidden="true"><img src="images/sih_prosol.png" alt="" loading="lazy" class="preview preview-0" width="800" height="337"></div>
       </article>
     <h3 class="cat">Vision &amp; perception</h3>
-      <article class="project">
+      <article class="project rv">
         <div class="label"><div class="copy">
           <h4>Vitals from patient-monitor photos</h4>
           <p>Reads vitals off photographs of patient monitors: YOLOv5 finds the monitor, InceptionV3 classifies its layout, XGBoost labels each reading and EasyOCR reads the digits, robust to viewing angle, monitor shape and background. Confidence 0.90–0.97 across vital types. Built for Inter IIT Tech Meet 11.0 (Cloud Physician problem statement).</p>
@@ -671,15 +764,15 @@ dialog.about::backdrop{background:0 0}
 </main>
 
 <footer id="contact">
-  <h2>Building systems that learn, <br>and the research behind them</h2>
-  <p>
+  <h2 class="rv">Building systems that learn, <br>and the research behind them</h2>
+  <p class="rv">
     <span class="contact-line">I finish my MS at UC San Diego in December 2026</span>
     <span class="contact-line">and am looking for ML/AI engineering and research</span>
     <span class="contact-line">roles from January 2027. Let's connect on <a class="social" href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank" rel="noopener"><span class="social-pill linkedin">LinkedIn</span></a>,</span>
     <span class="contact-line"><a class="social" href="https://github.com/harshit2807161" target="_blank" rel="noopener"><span class="social-pill github">GitHub</span></a> or <a class="social" href="https://scholar.google.com/citations?hl=en&amp;user=LLR8P9EAAAAJ" target="_blank" rel="noopener"><span class="social-pill scholar">Google Scholar</span></a>, or email me at</span>
     <span class="contact-line"><a class="social" href="mailto:hdhankhar@ucsd.edu"><span class="social-pill email">hdhankhar@ucsd.edu</span></a>.</span>
   </p>
-  <p class="colophon">Last updated October 2026 · San Diego, CA</p>
+  <p class="colophon rv">Last updated October 2026 · San Diego, CA</p>
 </footer>
 
 <dialog class="about" id="about" aria-labelledby="aboutTitle">
@@ -778,8 +871,51 @@ dialog.about::backdrop{background:0 0}
   dlg.addEventListener('click', function(e){ if (e.target === dlg) close(); });
   dlg.addEventListener('cancel', function(e){ e.preventDefault(); close(); });
 })();
+
+// section links glide instead of jumping: an eased scroll that any wheel, touch or key press can take over
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, run = 0;
+  function glide(to){
+    var from = scrollY, dist = to - from; if (!dist) return;
+    var dur = Math.min(1100, Math.max(520, Math.abs(dist) * 0.32)), t0 = performance.now(), id = ++run;
+    var ease = function(x){ return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    (function step(now){ if (id !== run) return; var k = Math.min(1, (now - t0) / dur); scrollTo({ top: from + dist * ease(k), left: 0, behavior: 'instant' }); if (k < 1) requestAnimationFrame(step); })(t0);
+  }
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function(ev){ addEventListener(ev, function(){ run++; }, { passive: true }); });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute('href').slice(1), el = id && document.getElementById(id); if (!el) return;
+    e.preventDefault();
+    var top = el.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(el).scrollMarginTop) || 0);
+    if (reduce) scrollTo({ top: top, left: 0, behavior: 'instant' }); else glide(top);
+    history.pushState(null, '', '#' + id);
+  });
+  // a hash on load: the page above the target can still change height while the modules start, so re-align for a moment
+  var target = location.hash && document.getElementById(location.hash.slice(1));
+  if (target && 'ResizeObserver' in window) {
+    var until = performance.now() + 10000, startRun = run;
+    var ro = new ResizeObserver(function(){ if (performance.now() > until || run !== startRun) { ro.disconnect(); return; } target.scrollIntoView({ block: 'start', behavior: 'instant' }); });
+    ro.observe(document.body);
+  }
+})();
+// sections settle in as they scroll into view; a batch that arrives together cascades
+(function(){
+  var els = [].slice.call(document.querySelectorAll('.rv'));
+  if (!els.length) return;
+  if (!('IntersectionObserver' in window) || !matchMedia('(prefers-reduced-motion: no-preference)').matches) { els.forEach(function(el){ el.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    var k = 0;
+    entries.forEach(function(en){ if (!en.isIntersecting) return; en.target.style.setProperty('--rv-d', (Math.min(k++, 6) * 0.07).toFixed(2) + 's'); en.target.classList.add('in'); io.unobserve(en.target); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(function(el){ io.observe(el); });
+  // safety net for browsers that are slow to deliver intersections: anything in view gets revealed on a timer and on scroll
+  var sweep = function(){ var k = 0, h = innerHeight; els.forEach(function(el){ if (el.classList.contains('in')) return; var r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < h * 0.96) { el.style.setProperty('--rv-d', (Math.min(k++, 6) * 0.07).toFixed(2) + 's'); el.classList.add('in'); io.unobserve(el); } }); };
+  setTimeout(sweep, 1500); setTimeout(sweep, 4000);
+  var tick = 0; addEventListener('scroll', function(){ if (tick) return; tick = setTimeout(function(){ tick = 0; sweep(); }, 250); }, { passive: true });
+})();
 </script>
+<script src="js/wall.js?v=1" defer></script>
 <script type="module" src="js/lanyard.js?v=21"></script>
-<script type="module" src="js/newspaper.js?v=16"></script>
+<script type="module" src="js/newspaper.js?v=17"></script>
 </body>
 </html>
