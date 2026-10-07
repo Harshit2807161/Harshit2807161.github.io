@@ -59,9 +59,10 @@
         var t = targets[i];
         if (!t) return;
         var g = c.g + (t[0] - c.g) * k;
-        if (Math.abs(g - t[0]) < 0.003) g = t[0];
+        if (t[0] === 0 && g < 0.004) g = 0;                      // land cleanly when the lens has moved away
+        else if (Math.abs(g - c.g) < 0.0015) g = c.g;             // converged: measured targets drift by a hair every frame, so hold still
         var push = AMP * PUSH * g, tx = t[1] * push, ty = t[2] * push * 0.7;   // rows sit tighter than columns, so spread less vertically
-        if (g === c.g && Math.abs(tx - c.tx) < 0.2 && Math.abs(ty - c.ty) < 0.2) { if (g > rowMax) rowMax = g; return; }
+        if (g === c.g && Math.abs(tx - c.tx) < 0.25 && Math.abs(ty - c.ty) < 0.25) { if (g > rowMax) rowMax = g; return; }
         var was = c.g; c.g = g; c.tx = tx; c.ty = ty;
         var st = c.el.style, s = 1 + AMP * g;
         if (g === 0) { resetCard(c.el); c.tx = c.ty = 0; c.z = ''; }
