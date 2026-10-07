@@ -27,7 +27,7 @@
       row.style.animationDelay = (-(i * 7.3)) + 's';                                      // rows start out of phase
     });
     bands = rows.map(function (row) {
-      return { row: row, z: '', cards: [].slice.call(row.children).map(function (el) { return { el: el, g: 0, tx: 0, ty: 0 }; }) };
+      return { row: row, z: '', cards: [].slice.call(row.children).map(function (el) { return { el: el, g: 0, tx: 0, ty: 0, z: '' }; }) };
     });
   }
 
@@ -64,10 +64,11 @@
         if (g === c.g && Math.abs(tx - c.tx) < 0.2 && Math.abs(ty - c.ty) < 0.2) { if (g > rowMax) rowMax = g; return; }
         var was = c.g; c.g = g; c.tx = tx; c.ty = ty;
         var st = c.el.style, s = 1 + AMP * g;
-        if (g === 0) { resetCard(c.el); c.tx = c.ty = 0; }
+        if (g === 0) { resetCard(c.el); c.tx = c.ty = 0; c.z = ''; }
         else {
           st.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + s.toFixed(4) + ')';
-          st.zIndex = String(100 + Math.round(g * 100));
+          var z = String(100 + Math.round(g * 100));
+          if (z !== c.z) { c.z = z; st.zIndex = z; }                 // paint order only changes when the quantized depth does
           st.setProperty('--m', g < 0.02 ? '0' : g.toFixed(3));
           if (was === 0) st.willChange = 'transform';
         }
