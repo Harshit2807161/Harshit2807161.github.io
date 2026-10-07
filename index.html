@@ -192,9 +192,11 @@ img{display:block}
 .wrow{position:relative;display:flex;width:max-content;margin:0;padding:0;list-style:none;animation:wall-slide var(--dur,80s) linear infinite;animation-direction:var(--dir,normal)}
 .wrow:nth-child(even){margin-left:calc(-.5*var(--card-w))}
 @keyframes wall-slide{to{transform:translateX(-50%)}}
+@property --m{syntax:"<number>";inherits:false;initial-value:0}
 .skill{position:relative;flex:0 0 var(--card-w);height:var(--card-h);margin-right:var(--gap);border-radius:11px;overflow:hidden;cursor:default;background:#fff;border:1px solid rgba(20,18,30,.07);transform-origin:50% 50%;
+  transition:transform .22s cubic-bezier(.2,.7,.2,1),--m .22s cubic-bezier(.2,.7,.2,1);
   box-shadow:0 1px 2px rgba(20,18,30,.04),0 14px 30px rgba(20,18,30,.09),0 0 0 calc(1.5px*var(--m,0)) var(--mark),0 calc(16px*var(--m,0)) calc(40px*var(--m,0)) color-mix(in srgb,var(--brand) 30%,transparent)}
-@media (prefers-reduced-motion:reduce){.skill:hover{--m:1}}
+@media (prefers-reduced-motion:reduce){.skill{transition:none}}
 @media (hover:none){.pointer-only{display:none}}
 .skill::before{content:"";position:absolute;inset:0;background:radial-gradient(110% 70% at 50% -12%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 62%)}
 .sk-tag{position:absolute;left:10px;top:9px;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#9a97a4}
@@ -225,6 +227,7 @@ img{display:block}
   transition:opacity .38s cubic-bezier(.2,.7,.2,1),transform .38s cubic-bezier(.2,.7,.2,1)}
 .xp.active{z-index:10}
 .xp.active::before{opacity:1;transform:none}
+@media (hover:hover){.xp:hover{z-index:10}.xp:hover::before{opacity:1;transform:none}.xp:hover>*{transform:translateY(-3px)}.project:hover{z-index:10}.project:hover::before{opacity:1;transform:none}.project:hover .copy{transform:translateY(-3px)}.project:hover .preview{opacity:1}.project:hover .preview-0{transform:translate(var(--mx,0px),var(--my,0px)) rotate(-8deg)}.project:hover .preview-1{transition-delay:35ms;transform:translate(calc(var(--mx,0px)*1.35),calc(var(--my,0px)*1.2)) rotate(10deg)}.project:hover .preview-2{transition-delay:70ms;transform:translate(calc(var(--mx,0px)*1.7),calc(var(--my,0px)*1.4)) rotate(-7.2deg)}}
 .xp>*{transition:transform .38s cubic-bezier(.2,.7,.2,1)}
 .xp.active>*{transform:translateY(-3px)}
 .xp:last-of-type{border-bottom:1px solid #eaeaea}
@@ -921,7 +924,7 @@ dialog.about::backdrop{background:0 0}
   var tick = 0; addEventListener('scroll', function(){ if (tick) return; tick = setTimeout(function(){ tick = 0; sweep(); }, 250); }, { passive: true });
 })();
 </script>
-<script src="js/wall.js?v=8" defer></script>
+<script src="js/wall.js?v=9" defer></script>
 <script type="module" src="js/lanyard.js?v=21"></script>
 <script type="module" src="js/newspaper.js?v=17"></script>
 </body>
