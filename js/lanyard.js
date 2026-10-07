@@ -341,19 +341,19 @@ function paintFront(d, photo) {
   ctx.font = fontFor(100); const wFirst = ctx.measureText(d.first).width, wLast = ctx.measureText(d.last).width;
   const fs = Math.min(100 * (innerW * 0.96) / Math.max(wFirst, wLast), 6.4 * s);
   ctx.font = fontFor(fs); ctx.textBaseline = 'alphabetic'; ctx.letterSpacing = `${-0.025 * fs}px`;
-  const nameTop = cy0 + 0.6 * s;
+  const nameTop = cy0 - 0.5 * s;
   ctx.fillStyle = '#080808'; ctx.fillText(d.first, cx0, nameTop + 0.75 * fs);
   ctx.fillStyle = d.lastColor; ctx.fillText(d.last, cx0, nameTop + 1.55 * fs);
   ctx.letterSpacing = '0px';
-  const nameH = 0.6 * s + 1.6 * fs;
+  const nameH = -0.5 * s + 1.6 * fs;
   // meta block metrics
-  const lbl = 1.15 * s, lineH = 1.3;
+  const lbl = 0.95 * s, val = 1.5 * s, lineH = 1.3;
   // the "previously" block: logos two by two, each with its name beneath
   const cols = Math.max(1, d.chips.length), cellW = innerW / cols, logoW = Math.min(6.4 * s, cellW - 0.6 * s), logoH = 2.8 * s, nameFs = 0.9 * s, nameGap = 0.3 * s;
   const chipsH = logoH + nameGap + nameFs * 1.2;
-  const metaH = lbl * lineH + 0.55 * s + lbl * lineH + 1.1 * s + lbl * lineH + 0.55 * s + chipsH;
+  const metaH = 0.9 * s + lbl * lineH + 0.35 * s + val * lineH + 1.4 * s + lbl * lineH + 0.6 * s + chipsH;
   const photoW = 15.5 * s, photoH = 19.4 * s;
-  const free = (cy1 - cy0) - nameH - photoH - metaH, gap = Math.max(0.6 * s, free / 2);
+  const free = (cy1 - cy0) - nameH - photoH - metaH, gap = Math.max(0.5 * s, free / 2);
   // photo
   const px = cardX + (cardWpx - photoW) / 2, py = cy0 + nameH + gap;
   ctx.save(); roundRect(ctx, px, py, photoW, photoH, 0.7 * s); ctx.fillStyle = '#ddd'; ctx.shadowColor = 'rgba(0,0,0,0.22)'; ctx.shadowBlur = 0.5 * s; ctx.shadowOffsetY = 0.12 * s; ctx.fill(); ctx.restore();
@@ -364,14 +364,15 @@ function paintFront(d, photo) {
   }
   // meta
   let y = py + photoH + gap;
-  ctx.fillStyle = '#080808';
-  ctx.font = fontFor(lbl, 500, true); ctx.fillText(d.nowLabel, cx0, y + lbl * 0.95); y += lbl * lineH + 0.55 * s;
-  ctx.font = fontFor(lbl, 500); ctx.fillText(d.now, cx0, y + lbl * 0.95); y += lbl * lineH + 1.1 * s;
-  ctx.font = fontFor(lbl, 500, true); ctx.fillText(d.thenLabel, cx0, y + lbl * 0.95); y += lbl * lineH + 0.55 * s;
+  ctx.fillStyle = 'rgba(0,0,0,0.09)'; ctx.fillRect(cx0, y, innerW, Math.max(1, 0.06 * s)); y += 0.9 * s;   // hairline above the details
+  const caps = (text, yy) => { ctx.save(); ctx.fillStyle = '#6b6873'; ctx.font = fontFor(lbl, 500); ctx.letterSpacing = `${0.14 * lbl}px`; ctx.fillText(text.toUpperCase(), cx0, yy); ctx.restore(); };
+  caps(d.nowLabel, y + lbl * 0.95); y += lbl * lineH + 0.35 * s;
+  ctx.fillStyle = '#080808'; ctx.font = fontFor(val, 600); ctx.letterSpacing = `${-0.015 * val}px`; ctx.fillText(d.now, cx0, y + val * 0.95); ctx.letterSpacing = '0px'; y += val * lineH + 1.4 * s;
+  caps(d.thenLabel, y + lbl * 0.95); y += lbl * lineH + 0.6 * s;
   ctx.font = fontFor(nameFs, 500); ctx.textAlign = 'center';
   d.chips.forEach((ch, i) => {
     const cx = cx0 + i * cellW + (cellW - logoW) / 2, cy = y;
-    const boxH = logoH;                                       // every mark gets the same box, caption or not
+    const boxH = ch.text ? logoH : chipsH;                     // a caption-less wordmark may use the caption's room too
     if (ch.img && ch.img.width) {
       const r = Math.min(logoW / ch.img.width, boxH / ch.img.height), dw = ch.img.width * r, dh = ch.img.height * r;
       ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
