@@ -371,7 +371,7 @@ function paintFront(d, photo) {
   ctx.font = fontFor(nameFs, 500); ctx.textAlign = 'center';
   d.chips.forEach((ch, i) => {
     const cx = cx0 + i * cellW + (cellW - logoW) / 2, cy = y;
-    const boxH = ch.text ? logoH : chipsH;                     // a wordmark with no caption may use the caption's room too
+    const boxH = logoH;                                       // every mark gets the same box, caption or not
     if (ch.img && ch.img.width) {
       const r = Math.min(logoW / ch.img.width, boxH / ch.img.height), dw = ch.img.width * r, dh = ch.img.height * r;
       ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
