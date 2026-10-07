@@ -136,10 +136,11 @@ img{display:block}
 .card .photo img{width:100%;height:100%;object-fit:cover;display:block}
 .card .meta{font-size:1.15cqh;line-height:1.3;letter-spacing:-.01em}
 .card .lbl{font-style:italic;font-weight:500;margin-bottom:.55cqh}
-.card .val{margin-bottom:1.6cqh}
-.chips{display:flex;flex-wrap:wrap;gap:.5cqh .5cqh}
-.chip{color:#fff;border-radius:999px;padding:.15cqh .7cqh .22cqh;font-size:1.05cqh;line-height:1.2;white-space:nowrap}
-.chip.k{background:#101010}.chip.r{background:#d7282f}.chip.p{background:#3b21c9}.chip.b{background:#1446d4}
+.card .val{margin-bottom:1.1cqh}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:.4cqh .6cqh}
+.chip{display:flex;flex-direction:column;align-items:center;gap:.3cqh;font-size:.9cqh;line-height:1.2;white-space:nowrap;color:#1a1a1a;font-weight:500}
+.chip img{width:6.4cqh;height:2.8cqh;object-fit:contain;display:block}
+.chip b{font-weight:500}
 
 /* three.js layer: shown once the simulation has rendered its first frame */
 .badge3d{display:none;position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .6s ease}
@@ -192,13 +193,12 @@ img{display:block}
 .wrow{position:relative;display:flex;width:max-content;margin:0;padding:0;list-style:none;animation:wall-slide var(--dur,80s) linear infinite;animation-direction:var(--dir,normal)}
 .wrow:nth-child(even){margin-left:calc(-.5*var(--card-w))}
 @keyframes wall-slide{to{transform:translateX(-50%)}}
-@property --m{syntax:"<number>";inherits:false;initial-value:0}
-.skill{position:relative;flex:0 0 var(--card-w);height:var(--card-h);margin-right:var(--gap);border-radius:11px;overflow:hidden;cursor:default;background:#fff;border:1px solid rgba(20,18,30,.07);transform-origin:50% 50%;
-  transition:transform .22s cubic-bezier(.2,.7,.2,1),--m .22s cubic-bezier(.2,.7,.2,1);
-  box-shadow:0 1px 2px rgba(20,18,30,.04),0 14px 30px rgba(20,18,30,.09),0 0 0 calc(1.5px*var(--m,0)) var(--mark),0 calc(16px*var(--m,0)) calc(40px*var(--m,0)) color-mix(in srgb,var(--brand) 30%,transparent)}
-@media (prefers-reduced-motion:reduce){.skill{transition:none}}
+.skill{position:relative;flex:0 0 var(--card-w);height:var(--card-h);margin-right:var(--gap);border-radius:11px;cursor:default;background:#fff;border:1px solid rgba(20,18,30,.07);transform-origin:50% 50%;
+  transition:transform .22s cubic-bezier(.2,.7,.2,1);box-shadow:0 1px 2px rgba(20,18,30,.04),0 10px 24px rgba(20,18,30,.08)}
+.skill::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;opacity:var(--m,0);transition:opacity .22s cubic-bezier(.2,.7,.2,1);box-shadow:0 0 0 1.5px var(--mark),0 16px 40px color-mix(in srgb,var(--brand) 30%,transparent)}
+@media (prefers-reduced-motion:reduce){.skill,.skill::after{transition:none}}
 @media (hover:none){.pointer-only{display:none}}
-.skill::before{content:"";position:absolute;inset:0;background:radial-gradient(110% 70% at 50% -12%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 62%)}
+.skill::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(110% 70% at 50% -12%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 62%)}
 .sk-tag{position:absolute;left:10px;top:9px;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#9a97a4}
 .sk-logo{position:absolute;left:50%;top:43%;width:40px;height:40px;transform:translate(-50%,-50%);background:var(--mark);-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
 .sk-word{position:absolute;left:8px;right:8px;top:41%;transform:translateY(-50%);text-align:center;font-weight:700;font-size:calc(var(--ws,28px)*.72);line-height:1;color:var(--mark);letter-spacing:-.02em}
@@ -227,7 +227,7 @@ img{display:block}
   transition:opacity .38s cubic-bezier(.2,.7,.2,1),transform .38s cubic-bezier(.2,.7,.2,1)}
 .xp.active{z-index:10}
 .xp.active::before{opacity:1;transform:none}
-@media (hover:hover){.xp:hover{z-index:10}.xp:hover::before{opacity:1;transform:none}.xp:hover>*{transform:translateY(-3px)}.project:hover{z-index:10}.project:hover::before{opacity:1;transform:none}.project:hover .copy{transform:translateY(-3px)}.project:hover .preview{opacity:1}.project:hover .preview-0{transform:translate(var(--mx,0px),var(--my,0px)) rotate(-8deg)}.project:hover .preview-1{transition-delay:35ms;transform:translate(calc(var(--mx,0px)*1.35),calc(var(--my,0px)*1.2)) rotate(10deg)}.project:hover .preview-2{transition-delay:70ms;transform:translate(calc(var(--mx,0px)*1.7),calc(var(--my,0px)*1.4)) rotate(-7.2deg)}}
+@media (hover:hover){.xp:hover{z-index:10}.xp:hover::before{opacity:1;transform:none}.xp:hover>*{transform:translateY(-3px)}.project:hover{z-index:10}.project:hover::before{opacity:1;transform:none}.project:hover .copy{transform:translateY(-3px)}}
 .xp>*{transition:transform .38s cubic-bezier(.2,.7,.2,1)}
 .xp.active>*{transform:translateY(-3px)}
 .xp:last-of-type{border-bottom:1px solid #eaeaea}
@@ -264,22 +264,17 @@ img{display:block}
 .links .private{color:#6f6c78}
 .status{display:inline-block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--ink);border-radius:999px;padding:2px 10px 3px;margin-left:4px;vertical-align:middle}
 .status.ok{background:#177a41}
-.status.review{background:#d7282f}
+.status.review{background:#f2c230;color:var(--ink)}
 .status.review-pending{background:#f3742b;color:var(--ink)}
 @media (hover:hover){
 }
 .previews{z-index:20;left:calc(var(--page-gutter) + var(--label-w) + 36px);top:50%;right:var(--page-gutter);pointer-events:none;height:190px;position:absolute;transform:translateY(-50%)}
-.preview{object-fit:contain;opacity:0;width:250px;height:190px;padding:8px;transition:transform .32s var(--ease-out),opacity .16s ease;background:#fff;border:1px solid #0000001a;border-radius:4px;position:absolute;transform:translateY(64px) rotate(0) scale(.95)}
+.preview{object-fit:contain;opacity:1;width:250px;height:190px;padding:8px;transition:transform .32s var(--ease-out);background:#fff;border:1px solid #0000001a;border-radius:4px;position:absolute;transform:translateY(64px) rotate(0) scale(.95)}
 .preview.cover{object-fit:cover;padding:0;object-position:50% 0}
-.preview-0{top:0;right:calc(2*max(0px,min(225px,50% - 125px)))}
-.preview-1{top:8px;right:max(0px,min(225px,50% - 125px))}
-.preview-2{top:8px;right:0}
+.preview-0{top:0;right:calc(2*max(0px,min(225px,50% - 125px)));transform:rotate(-8deg)}
+.preview-1{top:8px;right:max(0px,min(225px,50% - 125px));transform:rotate(10deg)}
+.preview-2{top:8px;right:0;transform:rotate(-7.2deg)}
 .preview:only-child{top:4px;right:max(0px,min(225px,50% - 125px))}
-.project.active .preview,.project:focus-within .preview{opacity:1}
-.project.active .preview-0,.project:focus-within .preview-0{transform:translate(var(--mx,0px),var(--my,0px)) rotate(-8deg)}
-.project.active .preview-1,.project:focus-within .preview-1{transition-delay:35ms;transform:translate(calc(var(--mx,0px)*1.35),calc(var(--my,0px)*1.2)) rotate(10deg)}
-.project.active .preview-2,.project:focus-within .preview-2{transition-delay:70ms;transform:translate(calc(var(--mx,0px)*1.7),calc(var(--my,0px)*1.4)) rotate(-7.2deg)}
-@media (hover:none) and (min-width:701px){.preview-0{opacity:1;transform:translateY(0) rotate(-8deg)}}
 @supports not (width:1cqh){.badge{display:none}}
 html:has(dialog.about[open]){overflow:hidden}
 @media (prefers-reduced-motion:reduce){.preview{transition:opacity .16s;transform:none!important}.panel,dialog.about,.copy,.social-pill,.headshot img,.project::before,.xp::before,.xp>*{transition:none}}
@@ -295,6 +290,13 @@ footer p{width:max-content;max-width:100%;padding-top:18px;font-size:16px;font-w
 .social{white-space:nowrap;border-radius:999px;margin:-4px -3px;padding:4px 3px;line-height:1.2;text-decoration:none;display:inline-block;position:relative}
 .social-pill{color:#fff;pointer-events:none;transform-origin:50%;transition:transform .18s var(--ease-out),opacity .18s ease;border-radius:999px;padding:1px 9px 2px;display:inline-block}
 .linkedin{background:#1400ff}.github{background:#000}.scholar{background:#ec3293;color:var(--ink)}.email{background:#f3742b;color:var(--ink)}
+.mark{display:inline-block;background:#fff;-webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat}
+.pill-mark{padding:3px 10px 2px;vertical-align:-4px;line-height:0}.pill-mark .mark{width:15px;height:15px}
+.footer-links{flex-basis:100%;display:flex;gap:12px;margin-top:-28px;padding:0;width:auto}
+.icon-link{width:42px;height:42px;border-radius:999px;background:#111;display:grid;place-items:center;text-decoration:none;transition:transform .18s var(--ease-out),opacity .18s ease}
+.icon-link .mark{width:20px;height:20px}
+.icon-link.scholar{background:#4285f4}.icon-link.linkedin{background:#1400ff}
+@media (hover:hover) and (pointer:fine){.icon-link:hover{transform:scale(.94) rotate(-3deg);opacity:.88}}
 @media (hover:hover) and (pointer:fine){.social:hover .social-pill{opacity:.85;transform:scale(.95) rotate(-2deg)}}
 .colophon{flex-basis:100%;margin-top:-16px;font-size:13px;color:#6f6c78;font-weight:400;padding:0}
 
@@ -423,9 +425,10 @@ dialog.about::backdrop{background:0 0}
               <div class="val">MS Computer Science @ UC San Diego</div>
               <div class="lbl">Previously</div>
               <div class="chips">
-                <span class="chip k">AWS</span>
-                <span class="chip r">AnyFeast</span>
-                <span class="chip p">PSL Dauphine</span>
+                <span class="chip"><img src="images/logos/aws.svg" alt="AWS"></span>
+                <span class="chip"><img src="images/anyfeast_logo.webp" alt=""><b>AnyFeast</b></span>
+                <span class="chip"><img src="images/psl_logo.png" alt=""><b>PSL Dauphine</b></span>
+                <span class="chip"><img src="images/iitp_logo.png" alt=""><b>IIT Patna</b></span>
               </div>
             </div>
           </div>
@@ -472,7 +475,7 @@ dialog.about::backdrop{background:0 0}
 </section>
 
 <section class="block" id="skills" aria-labelledby="skills-h">
-  <div class="sec-head rv"><h2 id="skills-h">Skills</h2><p class="kicker">Five rows of what I build with. <span class="pointer-only">Move the cursor over them to magnify.</span></p></div>
+  <div class="sec-head rv"><h2 id="skills-h">Skills</h2></div>
   <div class="wall rv rv-panel" aria-label="Skills, arranged as a rolling wall of cards">
     <div class="wall-grid">
       <ul class="wrow" data-speed="26" aria-label="Language">
@@ -573,7 +576,7 @@ dialog.about::backdrop{background:0 0}
 </section>
 
 <section class="block" id="publications" aria-labelledby="publications-h">
-  <div class="sec-head rv"><h2 id="publications-h">Publications</h2><p class="kicker">Hover or tab to a row to see the paper's figures.</p></div>
+  <div class="sec-head rv"><h2 id="publications-h">Publications</h2></div>
   <div class="rows pubs">
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -582,7 +585,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">WMT 2026 · Conference on Machine Translation</p>
           <div class="links"><a href="https://github.com/Harshit2807161/ProNMT" target="_blank" rel="noopener">[code]</a><a href="data/ProNMT_final.pdf" target="_blank" rel="noopener">[earlier version]</a><a href="data/Bachelor_Thesis.pdf" target="_blank" rel="noopener">[thesis]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/pronmt/example.png" alt="" loading="lazy" class="preview preview-0" width="800" height="196"><img src="images/pronmt.png" alt="" loading="lazy" class="preview preview-1" width="486" height="465"><img src="images/work/pronmt/batchwise_comet.png" alt="" loading="lazy" class="preview preview-2" width="567" height="432"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/pronmt/example.png" alt="" decoding="async" class="preview preview-0" width="800" height="196"><img src="images/pronmt.png" alt="" decoding="async" class="preview preview-1" width="486" height="465"><img src="images/work/pronmt/batchwise_comet.png" alt="" decoding="async" class="preview preview-2" width="567" height="432"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -591,7 +594,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">NeurIPS 2026 submission</p>
           <div class="links"><a href="https://higym.github.io/" target="_blank" rel="noopener">[project page]</a><a href="https://github.com/higym/HiGym" target="_blank" rel="noopener">[code]</a><a href="https://openreview.net/forum?id=85la7BxE0Q" target="_blank" rel="noopener">[OpenReview]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-0" width="800" height="365"><img src="images/work/higym/scaling_curves.png" alt="" loading="lazy" class="preview preview-1" width="800" height="311"><img src="images/work/higym/avg_ranking.png" alt="" loading="lazy" class="preview preview-2" width="800" height="393"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/higym/headline.png" alt="" decoding="async" class="preview preview-0" width="800" height="365"><img src="images/work/higym/scaling_curves.png" alt="" decoding="async" class="preview preview-1" width="800" height="311"><img src="images/work/higym/avg_ranking.png" alt="" decoding="async" class="preview preview-2" width="800" height="393"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -600,7 +603,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Sustainable Energy, Grids and Networks (Elsevier), 2026</p>
           <div class="links"><a href="https://doi.org/10.1016/j.segan.2026.102353" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/drl-evcs-module" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
+        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" decoding="async" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" decoding="async" class="preview preview-1" width="800" height="277"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -609,7 +612,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">WiOpt 2025 · 23rd International Symposium on Modeling and Optimization in Mobile, Ad Hoc, and Wireless Networks</p>
           <div class="links"><a href="https://ieeexplore.ieee.org/document/11123313" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/Tabular-and-Deep-Gittins-index-online-learning-" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/qgi_project.png" alt="" loading="lazy" class="preview preview-0" width="716" height="490"><img src="images/work/qgi/runtime_scaling.png" alt="" loading="lazy" class="preview preview-1" width="800" height="747"><img src="images/work/qgi/hyp_tuning.png" alt="" loading="lazy" class="preview preview-2" width="800" height="500"></div>
+        <div class="previews" aria-hidden="true"><img src="images/qgi_project.png" alt="" decoding="async" class="preview preview-0" width="716" height="490"><img src="images/work/qgi/runtime_scaling.png" alt="" decoding="async" class="preview preview-1" width="800" height="747"><img src="images/work/qgi/hyp_tuning.png" alt="" decoding="async" class="preview preview-2" width="800" height="500"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -618,7 +621,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">AAAI 2025 · Workshop on Quantum Computing and Artificial Intelligence (QC+AI)</p>
           <div class="links"><a href="data/NesQ_post_proceedings.pdf" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/NesQ" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/nesq/nmc-one.jpg" alt="" loading="lazy" class="preview preview-0" width="800" height="338"><img src="images/nesq.png" alt="" loading="lazy" class="preview preview-1" width="621" height="625"><img src="images/work/nesq/random_circuit_depth_30_150_opt.png" alt="" loading="lazy" class="preview preview-2" width="800" height="480"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/nesq/nmc-one.jpg" alt="" decoding="async" class="preview preview-0" width="800" height="338"><img src="images/nesq.png" alt="" decoding="async" class="preview preview-1" width="621" height="625"><img src="images/work/nesq/random_circuit_depth_30_150_opt.png" alt="" decoding="async" class="preview preview-2" width="800" height="480"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -627,7 +630,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">IEEE BigData 2023 · IEEE International Conference on Big Data</p>
           <div class="links"><a href="https://ieeexplore.ieee.org/abstract/document/10386385" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/co2-prediction-saarc-countries" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/co2_saarc.png" alt="" loading="lazy" class="preview preview-0" width="595" height="791"><img src="images/work/co2/val_comp.png" alt="" loading="lazy" class="preview preview-1" width="618" height="484"><img src="images/work/co2/india.png" alt="" loading="lazy" class="preview preview-2" width="589" height="432"></div>
+        <div class="previews" aria-hidden="true"><img src="images/co2_saarc.png" alt="" decoding="async" class="preview preview-0" width="595" height="791"><img src="images/work/co2/val_comp.png" alt="" decoding="async" class="preview preview-1" width="618" height="484"><img src="images/work/co2/india.png" alt="" decoding="async" class="preview preview-2" width="589" height="432"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -636,13 +639,13 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Manuscript, 2024 · under review</p>
           <div class="links"><a href="data/EVPP.pdf" target="_blank" rel="noopener">[manuscript]</a><a href="https://github.com/Harshit2807161/transformerRL-ev-charging-PP" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" loading="lazy" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" loading="lazy" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" loading="lazy" class="preview preview-2" width="800" height="400"></div>
+        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" decoding="async" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" decoding="async" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" decoding="async" class="preview preview-2" width="800" height="400"></div>
       </article>
   </div>
 </section>
 
 <section class="block" id="projects" aria-labelledby="projects-h">
-  <div class="sec-head rv"><h2 id="projects-h">Key projects</h2><p class="kicker">Hover or tab to a row for screenshots and figures.</p></div>
+  <div class="sec-head rv"><h2 id="projects-h">Key projects</h2></div>
   <div class="rows">
     <h3 class="cat">Agents &amp; LLM systems</h3>
       <article class="project rv">
@@ -652,7 +655,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Sep 2026 – present · Python, Browser Use, Next.js, FastAPI</p>
           <div class="links"><a href="https://github.com/Harshit2807161/job-hunting-buddy" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/jhb/dashboard-top.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="555"><img src="images/work/jhb/dashboard.png" alt="" loading="lazy" class="preview preview-1" width="509" height="800"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/jhb/dashboard-top.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="555"><img src="images/work/jhb/dashboard.png" alt="" decoding="async" class="preview preview-1" width="509" height="800"></div>
       </article>
       <article class="project" tabindex="0">
         <div class="label"><div class="copy">
@@ -661,7 +664,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Oct 2026 · Python, FastAPI, Claude API, Docker</p>
           <div class="links"><span class="private">private repo</span></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/insurance/demo.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="449"><img src="images/work/gen/insurance-sop.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="608"><img src="images/work/insurance/escalation.png" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="449"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/insurance/demo.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="449"><img src="images/work/gen/insurance-sop.png" alt="" decoding="async" class="preview preview-1 cover" width="800" height="608"><img src="images/work/insurance/escalation.png" alt="" decoding="async" class="preview preview-2 cover" width="800" height="449"></div>
       </article>
       <article class="project" tabindex="0">
         <div class="label"><div class="copy">
@@ -670,7 +673,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Jan 2026 – present · Next.js, FastAPI, PostgreSQL, Celery, LangGraph</p>
           <div class="links"><span class="private">private repo</span></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/gen/gr8r.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/gr8r.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="608"></div>
       </article>
       <article class="project" tabindex="0">
         <div class="label"><div class="copy">
@@ -679,7 +682,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Spring 2026 · PEFT, TRL, RapidFire AI</p>
           <div class="links"><span class="private">private repo</span></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/gen/schema-linking.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/schema-linking.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="608"></div>
       </article>
       <article class="project" tabindex="0">
         <div class="label"><div class="copy">
@@ -688,7 +691,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Spring 2026 · FAISS, cross-encoders, LLM-as-judge</p>
           <div class="links"><span class="private">private repo</span></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/gen/rapidfire-rag.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/rapidfire-rag.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="608"></div>
       </article>
     <h3 class="cat">Reinforcement learning &amp; control</h3>
       <article class="project rv">
@@ -698,7 +701,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Oct 2025 – present · DMControl, TD-MPC2, PPO</p>
           <div class="links"><a href="https://higym.github.io/" target="_blank" rel="noopener">[project page]</a><a href="https://github.com/higym/HiGym" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/higym/quadruped-512.jpg" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="449"><img src="images/work/higym/headline.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="365"><img src="images/work/higym/walker-256.jpg" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="449"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/higym/quadruped-512.jpg" alt="" decoding="async" class="preview preview-0 cover" width="800" height="449"><img src="images/work/higym/headline.png" alt="" decoding="async" class="preview preview-1 cover" width="800" height="365"><img src="images/work/higym/walker-256.jpg" alt="" decoding="async" class="preview preview-2 cover" width="800" height="449"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -707,7 +710,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">2023 – 2026 · PPO, DQN, DDQN, OpenAI Gym</p>
           <div class="links"><a href="https://doi.org/10.1016/j.segan.2026.102353" target="_blank" rel="noopener">[paper]</a><a href="https://github.com/Harshit2807161/drl-evcs-module" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" loading="lazy" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" loading="lazy" class="preview preview-1" width="800" height="277"></div>
+        <div class="previews" aria-hidden="true"><img src="images/evcs-framework.png" alt="" decoding="async" class="preview preview-0" width="800" height="388"><img src="images/full_system1.png" alt="" decoding="async" class="preview preview-1" width="800" height="277"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -716,7 +719,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">2024 · PyTorch, Stable-Baselines3</p>
           <div class="links"><a href="data/EVPP.pdf" target="_blank" rel="noopener">[manuscript]</a><a href="https://github.com/Harshit2807161/transformerRL-ev-charging-PP" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" loading="lazy" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" loading="lazy" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" loading="lazy" class="preview preview-2" width="800" height="400"></div>
+        <div class="previews" aria-hidden="true"><img src="images/EVPP.png" alt="" decoding="async" class="preview preview-0" width="800" height="427"><img src="images/work/evpp/patchtst.png" alt="" decoding="async" class="preview preview-1" width="800" height="400"><img src="images/work/evpp/autoformer.png" alt="" decoding="async" class="preview preview-2" width="800" height="400"></div>
       </article>
     <h3 class="cat">Products &amp; platforms</h3>
       <article class="project rv">
@@ -726,7 +729,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">2024 · MongoDB, Express, React, Node.js, Redis</p>
           <div class="links"><a href="https://alloc8.in/" target="_blank" rel="noopener">[website]</a><a href="https://drive.google.com/file/d/1xsRlNPqEN_CiAxSVJWuw3Zz-1-XOxruA/view" target="_blank" rel="noopener">[demo]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/alloc8.png" alt="" loading="lazy" class="preview preview-0" width="562" height="361"></div>
+        <div class="previews" aria-hidden="true"><img src="images/alloc8.png" alt="" decoding="async" class="preview preview-0" width="562" height="361"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -735,7 +738,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">2025 · Next.js, Socket.IO, Prisma, PostgreSQL</p>
           <div class="links"><a href="https://github.com/Harshit2807161/privy-notion" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/gen/privy.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="608"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/gen/privy.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="608"></div>
       </article>
       <article class="project" tabindex="0">
         <div class="label"><div class="copy">
@@ -744,7 +747,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Jan 2026 · React, Tailwind CSS, Vercel</p>
           <div class="links"><a href="https://qtways-website.vercel.app" target="_blank" rel="noopener">[live site]</a><span class="private">private repo</span></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/qtways/home.png" alt="" loading="lazy" class="preview preview-0 cover" width="800" height="500"><img src="images/work/qtways/shop.png" alt="" loading="lazy" class="preview preview-1 cover" width="800" height="500"><img src="images/work/gen/qtways.png" alt="" loading="lazy" class="preview preview-2 cover" width="800" height="608"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/qtways/home.png" alt="" decoding="async" class="preview preview-0 cover" width="800" height="500"><img src="images/work/qtways/shop.png" alt="" decoding="async" class="preview preview-1 cover" width="800" height="500"><img src="images/work/gen/qtways.png" alt="" decoding="async" class="preview preview-2 cover" width="800" height="608"></div>
       </article>
       <article class="project rv">
         <div class="label"><div class="copy">
@@ -753,7 +756,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Aug 2022 · Python, NLP, Flask</p>
           <div class="links"><a href="https://github.com/Harshit2807161/SIH-2022-DR710-PROSOL" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/sih_prosol.png" alt="" loading="lazy" class="preview preview-0" width="800" height="337"></div>
+        <div class="previews" aria-hidden="true"><img src="images/sih_prosol.png" alt="" decoding="async" class="preview preview-0" width="800" height="337"></div>
       </article>
     <h3 class="cat">Vision &amp; perception</h3>
       <article class="project rv">
@@ -763,7 +766,7 @@ dialog.about::backdrop{background:0 0}
           <p class="date">Feb 2023 · YOLOv5, InceptionV3, XGBoost, EasyOCR</p>
           <div class="links"><a href="https://github.com/Harshit2807161/Cloud-Physician" target="_blank" rel="noopener">[code]</a></div>
         </div></div>
-        <div class="previews" aria-hidden="true"><img src="images/work/cloud-physician/Flowchart.png" alt="" loading="lazy" class="preview preview-0" width="800" height="449"><img src="images/cloud_phys.png" alt="" loading="lazy" class="preview preview-1" width="800" height="258"><img src="images/work/cloud-physician/monitor.jpeg" alt="" loading="lazy" class="preview preview-2" width="800" height="450"></div>
+        <div class="previews" aria-hidden="true"><img src="images/work/cloud-physician/Flowchart.png" alt="" decoding="async" class="preview preview-0" width="800" height="449"><img src="images/cloud_phys.png" alt="" decoding="async" class="preview preview-1" width="800" height="258"><img src="images/work/cloud-physician/monitor.jpeg" alt="" decoding="async" class="preview preview-2" width="800" height="450"></div>
       </article>
   </div>
 </section>
@@ -774,9 +777,13 @@ dialog.about::backdrop{background:0 0}
   <p class="rv">
     <span class="contact-line">I finish my MS at UC San Diego in December 2026</span>
     <span class="contact-line">and am looking for ML/AI engineering and research</span>
-    <span class="contact-line">roles from January 2027. Let's connect on <a class="social" href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank" rel="noopener"><span class="social-pill linkedin">LinkedIn</span></a>,</span>
-    <span class="contact-line"><a class="social" href="https://github.com/harshit2807161" target="_blank" rel="noopener"><span class="social-pill github">GitHub</span></a> or <a class="social" href="https://scholar.google.com/citations?hl=en&amp;user=LLR8P9EAAAAJ" target="_blank" rel="noopener"><span class="social-pill scholar">Google Scholar</span></a>, or email me at</span>
+    <span class="contact-line">roles from January 2027. Let's connect on <a class="social" href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="social-pill linkedin pill-mark"><i class="mark" style="--logo:url(images/logos/linkedin.svg)"></i></span></a> or email me at</span>
     <span class="contact-line"><a class="social" href="mailto:hdhankhar@ucsd.edu"><span class="social-pill email">hdhankhar@ucsd.edu</span></a>.</span>
+  </p>
+  <p class="footer-links rv" aria-label="Profiles">
+    <a class="icon-link" href="https://github.com/harshit2807161" target="_blank" rel="noopener" aria-label="GitHub"><i class="mark" style="--logo:url(images/logos/github.svg)"></i></a>
+    <a class="icon-link scholar" href="https://scholar.google.com/citations?hl=en&amp;user=LLR8P9EAAAAJ" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="mark" style="--logo:url(images/logos/scholar.svg)"></i></a>
+    <a class="icon-link linkedin" href="https://www.linkedin.com/in/harshit-dhankhar/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="mark" style="--logo:url(images/logos/linkedin.svg)"></i></a>
   </p>
   <p class="colophon rv">Last updated October 2026 · San Diego, CA</p>
 </footer>
@@ -936,8 +943,8 @@ if (/debug=hover/.test(location.search)) (function(){
   var tick = 0; addEventListener('scroll', function(){ if (tick) return; tick = setTimeout(function(){ tick = 0; sweep(); }, 250); }, { passive: true });
 })();
 </script>
-<script src="js/wall.js?v=9" defer></script>
-<script type="module" src="js/lanyard.js?v=21"></script>
+<script src="js/wall.js?v=10" defer></script>
+<script type="module" src="js/lanyard.js?v=25"></script>
 <script type="module" src="js/newspaper.js?v=17"></script>
 </body>
 </html>

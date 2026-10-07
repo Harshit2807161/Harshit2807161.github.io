@@ -64,6 +64,7 @@ async function init() {
     document.fonts ? document.fonts.load('500 100px Gelasio') : Promise.resolve(),
   ]).catch(() => {});
   const photo = data.photo ? await loadImage(data.photo).catch(() => null) : null;
+  await Promise.all(data.chips.map(ch => ch.logo ? loadImage(ch.logo).then(im => { ch.img = im; }).catch(() => {}) : null));
   const frontTex = canvasTexture(paintFront(data, photo));
   const backTex = canvasTexture(paintBack());
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -274,7 +275,7 @@ async function init() {
 // ---------- helpers ----------
 function readCardData() {
   const q = (s) => document.querySelector(s);
-  const chips = [...document.querySelectorAll('.badge .chip')].map(c => ({ text: c.textContent.trim(), color: getComputedStyle(c).backgroundColor }));
+  const chips = [...document.querySelectorAll('.badge .chip')].map(c => ({ text: c.querySelector('b') ? c.querySelector('b').textContent.trim() : '', logo: c.querySelector('img') ? c.querySelector('img').getAttribute('src') : '' }));
   return {
     first: q('.badge .first')?.textContent.trim() || 'Harshit',
     last: q('.badge .last')?.textContent.trim() || 'Dhankhar',
@@ -315,7 +316,7 @@ function paintHolder(ctx, s, W, H) {
 }
 
 function paintFront(d, photo) {
-  const W = 1400, s = W / UNIT.cardW, H = Math.round(UNIT.cardH * s);
+  const W = 2000, s = W / UNIT.cardW, H = Math.round(UNIT.cardH * s);   // sharp enough for the logos on a retina screen
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const ctx = c.getContext('2d');
   const { cardX, cardY, cardWpx, cardHpx } = paintHolder(ctx, s, W, H);
@@ -346,8 +347,11 @@ function paintFront(d, photo) {
   ctx.letterSpacing = '0px';
   const nameH = 0.6 * s + 1.6 * fs;
   // meta block metrics
-  const lbl = 1.15 * s, chipFs = 1.05 * s, lineH = 1.3;
-  const metaH = lbl * lineH + 0.55 * s + lbl * lineH + 1.6 * s + lbl * lineH + 0.55 * s + (chipFs * 1.2 + 0.37 * s);
+  const lbl = 1.15 * s, lineH = 1.3;
+  // the "previously" block: logos two by two, each with its name beneath
+  const cols = Math.max(1, d.chips.length), cellW = innerW / cols, logoW = Math.min(6.4 * s, cellW - 0.6 * s), logoH = 2.8 * s, nameFs = 0.9 * s, nameGap = 0.3 * s;
+  const chipsH = logoH + nameGap + nameFs * 1.2;
+  const metaH = lbl * lineH + 0.55 * s + lbl * lineH + 1.1 * s + lbl * lineH + 0.55 * s + chipsH;
   const photoW = 15.5 * s, photoH = 19.4 * s;
   const free = (cy1 - cy0) - nameH - photoH - metaH, gap = Math.max(0.6 * s, free / 2);
   // photo
@@ -362,17 +366,20 @@ function paintFront(d, photo) {
   let y = py + photoH + gap;
   ctx.fillStyle = '#080808';
   ctx.font = fontFor(lbl, 500, true); ctx.fillText(d.nowLabel, cx0, y + lbl * 0.95); y += lbl * lineH + 0.55 * s;
-  ctx.font = fontFor(lbl, 500); ctx.fillText(d.now, cx0, y + lbl * 0.95); y += lbl * lineH + 1.6 * s;
+  ctx.font = fontFor(lbl, 500); ctx.fillText(d.now, cx0, y + lbl * 0.95); y += lbl * lineH + 1.1 * s;
   ctx.font = fontFor(lbl, 500, true); ctx.fillText(d.thenLabel, cx0, y + lbl * 0.95); y += lbl * lineH + 0.55 * s;
-  ctx.font = fontFor(chipFs, 500);
-  let x = cx0; const chipH = chipFs * 1.2 + 0.37 * s;
-  for (const ch of d.chips) {
-    const tw = ctx.measureText(ch.text).width, cw = tw + 1.4 * s;
-    if (x + cw > cx1) { x = cx0; y += chipH + 0.5 * s; }
-    roundRect(ctx, x, y, cw, chipH, chipH / 2); ctx.fillStyle = ch.color || '#101010'; ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.fillText(ch.text, x + 0.7 * s, y + chipH * 0.5 + chipFs * 0.36);
-    x += cw + 0.5 * s;
-  }
+  ctx.font = fontFor(nameFs, 500); ctx.textAlign = 'center';
+  d.chips.forEach((ch, i) => {
+    const cx = cx0 + i * cellW + (cellW - logoW) / 2, cy = y;
+    const boxH = ch.text ? logoH : chipsH;                     // a wordmark with no caption may use the caption's room too
+    if (ch.img && ch.img.width) {
+      const r = Math.min(logoW / ch.img.width, boxH / ch.img.height), dw = ch.img.width * r, dh = ch.img.height * r;
+      ctx.save(); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(ch.img, cx + (logoW - dw) / 2, cy + (boxH - dh) / 2, dw, dh); ctx.restore();
+    }
+    if (ch.text) { ctx.fillStyle = '#1a1a1a'; ctx.fillText(ch.text, cx + logoW / 2, cy + logoH + nameGap + nameFs * 0.95); }
+  });
+  ctx.textAlign = 'left';
   ctx.restore();
   return c;
 }
