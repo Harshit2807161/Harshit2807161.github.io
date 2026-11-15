@@ -169,9 +169,10 @@ img{display:block}
 .sub:first-of-type{padding-top:8px}
 
 /* news: the newspaper */
-.press{position:relative;margin:0 var(--page-gutter);outline:none}
+.press{position:relative;margin:0 var(--page-gutter);outline:none;container-type:inline-size}
 .press:focus-visible{outline:2px solid #7950ef;outline-offset:8px;border-radius:8px}
-.press canvas{display:none;width:100%;height:min(68vh,660px);opacity:0;transition:opacity .7s ease}
+/* --lift (set by newspaper.js): the canvas reaches that far up over the heading so a page mid-turn is never cut off */
+.press canvas{display:none;width:100%;height:calc(min(68vh,660px) + var(--lift,0px));margin-top:calc(-1 * var(--lift,0px));pointer-events:none;opacity:0;transition:opacity .7s ease}
 .js .press:not(.plain) canvas{display:block}
 .press.live canvas{opacity:1}
 .press-bar{display:none;visibility:hidden;align-items:center;justify-content:center;gap:18px;margin-top:4px;font-size:15px;color:#6f6c78}
@@ -186,7 +187,7 @@ img{display:block}
 .news-list time{color:#6b6873;font-variant-numeric:tabular-nums}
 .news-list b{font-weight:500}
 @media (min-width:701px){.js .press:not(.plain) .news-list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
-@media (max-width:700px){.press canvas{height:auto;aspect-ratio:4/3}.js .press:not(.plain) .news-list{margin-top:28px}}
+@media (max-width:700px){.press canvas{height:calc(75cqw + var(--lift,0px))}.js .press:not(.plain) .news-list{margin-top:28px}}
 @media (max-width:479px){.press canvas,.press-bar,#news .kicker{display:none!important}}
 /* ---- skills wall ---- */
 #skills{--card-w:100px;--card-h:118px;--gap:10px;--wall-h:min(700px,82vh);--panel:#f0eff3}
@@ -954,6 +955,6 @@ if (/debug=hover/.test(location.search)) (function(){
 </script>
 <script src="js/wall.js?v=10" defer></script>
 <script type="module" src="js/lanyard.js?v=27"></script>
-<script type="module" src="js/newspaper.js?v=17"></script>
+<script type="module" src="js/newspaper.js?v=18"></script>
 </body>
 </html>

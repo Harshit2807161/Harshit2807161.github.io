@@ -4,6 +4,7 @@ import * as THREE from 'three';
 
 const press = document.querySelector('.press');
 const canvas = press && press.querySelector('canvas');
+const section = press && press.closest('section');
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const TITLE = 'The Daily Prophet';
 const PW = 1, PH = 1.36;                      // page size in world units
@@ -34,12 +35,22 @@ async function init() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(24, 1, 0.5, 20);
   const DIR = new THREE.Vector3(0, Math.sin(62 * Math.PI / 180), Math.cos(62 * Math.PI / 180)), LOOK = new THREE.Vector3(0, 0.05, 0.02);
-  function frameCamera() {                           // back the camera off along a fixed line of sight until the whole spread fits
+  // Back the camera off along a fixed line of sight until the spread fits the rows it rests in (the bottom baseH of the canvas) and
+  // everything a turning sheet sweeps through fits the whole canvas; a vertical lens shift then sets the spread on the bottom margin.
+  function frameCamera(baseH, fullH) {
     const v = new THREE.Vector3(), corners = [[-PW, 0, PH / 2], [PW, 0, PH / 2], [-PW, 0, -PH / 2], [PW, 0, -PH / 2]];
+    const k = baseH / fullH, floor = -1 + 0.06 * k, ceil = -1 + 1.97 * k;   // the spread's -0.94 / 0.97 margins, within the resting rows
+    let shift = 0;
     for (let d = 2.4; d <= 10; d += 0.03) {
       camera.position.copy(LOOK).addScaledVector(DIR, d); camera.lookAt(LOOK); camera.updateMatrixWorld();
-      if (corners.every(c => { v.set(c[0], c[1], c[2]).project(camera); return Math.abs(v.x) <= 0.96 && v.y <= 0.97 && v.y >= -0.94; })) break;
+      let lo = Infinity, hi = -Infinity, wide = false;
+      for (const c of corners) { v.set(c[0], c[1], c[2]).project(camera); lo = Math.min(lo, v.y); hi = Math.max(hi, v.y); wide = wide || Math.abs(v.x) > 0.96; }
+      shift = floor - lo;
+      if (wide || hi + shift > ceil) continue;
+      if (reach.every(p => { v.copy(p).project(camera); return Math.abs(v.x) <= 0.98 && v.y + shift <= 0.96; })) break;   // 0.96 leaves room for the tilt
     }
+    camera.projectionMatrix.elements[9] -= shift;     // the lens shift: moves every point up the frame by `shift` (NDC)
+    camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
   }
 
   scene.add(new THREE.HemisphereLight(0xfff6e8, 0xcfc4b0, 1.0));
@@ -98,7 +109,7 @@ async function init() {
   const flipBack = new THREE.Mesh(flipBackGeo, pageMat(blank)); flipBack.material.side = THREE.BackSide;
   for (const m of [flipFront, flipBack]) { m.castShadow = true; m.receiveShadow = true; m.visible = false; m.frustumCulled = false; paper.add(m); }
   const n = pos0.length / 3, prof = new Float32Array((SU + 1) * 2);
-  function deform(t) {
+  function bendProfile(t) {
     // t = 0: lying on the right; t = 1: lying on the left. The sheet is treated as inextensible: its tangent angle
     // is base + bend(s), and the profile is integrated along the page, so the free edge lifts first and curls over.
     const base = Math.PI * t, bend = 0.95 * Math.sin(Math.PI * t) * (1 - 0.35 * t), ds = PW / SU;
@@ -108,6 +119,18 @@ async function init() {
       const s = (c + 0.5) / SU, phi = base + bend * s * (1 - 0.35 * s);
       x += ds * Math.cos(phi); y += ds * Math.sin(phi);
     }
+  }
+  // everywhere a turning sheet and its shadow on the table reach during a flip, sampled once for frameCamera
+  const reach = [], fall = new THREE.Vector3().subVectors(key.target.position, key.position);   // the key light's direction
+  for (let t = 0; t <= 1.0001; t += 0.05) {
+    bendProfile(t);
+    for (let c = 0; c <= SU; c += 4) for (const z of [-PH / 2, PH / 2]) {
+      const p = new THREE.Vector3(prof[c * 2], prof[c * 2 + 1], z);
+      reach.push(p, p.clone().addScaledVector(fall, (p.y - catcher.position.y) / -fall.y));
+    }
+  }
+  function deform(t) {
+    bendProfile(t);
     const a = flipFrontGeo.attributes.position.array, b = flipBackGeo.attributes.position.array;
     for (let i = 0; i < n; i++) {
       const c = i % (SU + 1), z = -pos0[i * 3 + 1];
@@ -175,28 +198,32 @@ async function init() {
     paint(true, 'Five Knuts, please.');
     owlTimer = setTimeout(() => { paint(false, 'Five Knuts, please.'); owlTimer = setTimeout(() => { paint(false, ''); owlTimer = 0; }, 1400); }, 260);
   }
-  canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
-  canvas.addEventListener('pointerup', (e) => {
+  // the canvas reaches up over the heading and ignores the pointer, so the press, which covers only the resting spread, listens instead
+  press.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
+  press.addEventListener('pointerup', (e) => {
     if (!downAt) return; const moved = Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]); downAt = null;
     if (moved < 6) { const h = hitAt(e); if (h.owl) hoot(); else if (h.side) flip(h.side); }
   });
   const tilt = { x: 0, y: 0, tx: 0, ty: 0 };
-  canvas.addEventListener('pointermove', (e) => {
-    const r = canvas.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+  press.addEventListener('pointermove', (e) => {
+    const r = canvas.getBoundingClientRect(), top = r.top + lift, rh = r.height - lift;
+    const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - top) / rh - 0.5;
     tilt.tx = -py * 0.07; tilt.ty = px * 0.09;
     const h = hitAt(e), s = h.side;
-    canvas.style.cursor = h.owl || (s === 1 && spread < spreads - 1) || (s === -1 && spread > 0) ? 'pointer' : '';
+    press.style.cursor = h.owl || (s === 1 && spread < spreads - 1) || (s === -1 && spread > 0) ? 'pointer' : '';
   });
-  canvas.addEventListener('pointerleave', () => { tilt.tx = 0; tilt.ty = 0; });
+  press.addEventListener('pointerleave', () => { tilt.tx = 0; tilt.ty = 0; });
 
   // ---------- sizing & loop ----------
-  let visible = true, raf = 0, dirty = true;
+  let visible = true, raf = 0, dirty = true, lift = 0;
   function resize() {
-    const w = press.clientWidth, h = canvas.clientHeight || Math.round(w * 0.56);
+    // a turning sheet rises well above the resting spread, so the canvas reaches up to the top of the section (it is transparent there)
+    lift = section ? Math.max(0, press.offsetTop - section.offsetTop) : 0;
+    press.style.setProperty('--lift', lift + 'px');
+    const w = press.clientWidth, h = canvas.clientHeight || Math.round(w * 0.56) + lift;
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
-    frameCamera(); dirty = true;
+    frameCamera(h - lift, h); dirty = true;
   }
   resize();
   new ResizeObserver(resize).observe(press);
