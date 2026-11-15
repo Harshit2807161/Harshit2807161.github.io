@@ -153,7 +153,8 @@ img{display:block}
 .mobile-hint{display:none}
 
 /* ---------- jump nav ---------- */
-.jump{position:absolute;top:150px;left:var(--page-gutter);z-index:3;display:flex;gap:18px;font-size:15px;letter-spacing:-.01em}
+/* baseline: the ↗ falls back to a font with a taller ascent, which would push Résumé below the other links */
+.jump{position:absolute;top:150px;left:var(--page-gutter);z-index:3;display:flex;align-items:baseline;gap:18px;font-size:15px;letter-spacing:-.01em}
 .jump a{color:#6f6c78;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;transition:color .15s}
 .jump a:hover{color:var(--ink)}
 
