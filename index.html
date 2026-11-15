@@ -145,9 +145,10 @@ img{display:block}
 .chip b{font-weight:500}
 
 /* three.js layer: shown once the simulation has rendered its first frame */
-.badge3d{display:none;position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .6s ease}
+/* the two badges never line up exactly, so the static one is mostly gone before the 3D one comes up: no double exposure */
+.badge3d{display:none;position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .6s ease .15s}
 .badge3d canvas{width:100%;height:100%;display:block;touch-action:pan-y}
-.hero.live .badge{opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.hero.live .badge{opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s .25s}
 .hero.live .badge3d{display:block}
 .hero.live.shown .badge3d{opacity:1}
 /* mobile badge: same rig, slightly tilted like the reference */
