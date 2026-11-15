@@ -53,7 +53,8 @@ img{display:block}
 
 /* ---------- hero ---------- */
 .hero{background:#fff;width:100%;height:100vh;position:relative;overflow:hidden}
-.intro,.education{letter-spacing:-.02em;z-index:3;pointer-events:none;font-size:1rem;line-height:1.25;position:absolute;top:100px}
+/* the lanyard's straps hang through the middle of the hero; its geometry is measured in hero heights, so the side columns keep 9vh clear of centre */
+.intro,.education{letter-spacing:-.02em;z-index:3;pointer-events:none;font-size:1rem;line-height:1.25;position:absolute;top:100px;max-width:calc(50% - var(--page-gutter) - 9vh)}
 .intro{left:var(--page-gutter)}
 .education{right:var(--page-gutter);text-align:right}
 .more{pointer-events:auto;color:var(--muted);font:inherit;text-underline-offset:3px;cursor:pointer;background:0 0;border:0;padding:0;text-decoration:underline;text-decoration-thickness:1px;transition:color .15s}
@@ -154,7 +155,7 @@ img{display:block}
 
 /* ---------- jump nav ---------- */
 /* baseline: the ↗ falls back to a font with a taller ascent, which would push Résumé below the other links */
-.jump{position:absolute;top:150px;left:var(--page-gutter);z-index:3;display:flex;align-items:baseline;gap:18px;font-size:15px;letter-spacing:-.01em}
+.jump{position:absolute;top:150px;left:var(--page-gutter);z-index:3;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 15px;max-width:calc(50% - var(--page-gutter) - 9vh);font-size:15px;letter-spacing:-.01em}
 .jump a{color:#6f6c78;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;transition:color .15s}
 .jump a:hover{color:var(--ink)}
 
@@ -333,16 +334,18 @@ dialog.about::backdrop{background:0 0}
 /* ---------- mobile ---------- */
 @media (max-width:700px){
   .hero{height:100svh;min-height:700px}
+  .intro,.education{max-width:none}
   .intro{top:44px;left:32px}
   .education{top:108px;right:32px}
-  .badge{inset:196px 20px 32px;overflow:hidden}
+  /* the nav wraps to two rows here and ends near 222px, so the strap starts below it */
+  .badge{inset:238px 20px 32px;overflow:hidden}
   .badge3d{display:none!important}
   .hero.live .badge{opacity:1;visibility:visible}
   .rig{animation:none;transform-origin:50% 0;transform:rotate(6deg) translateY(1%)}
   .strap{filter:none}
   .holder{box-shadow:0 0 0 .12cqh rgba(0,0,0,.08),2cqh 1.6cqh 2.6cqh rgba(0,0,0,.12)}
   .jump{position:static;padding:0 32px;margin-top:0;flex-wrap:wrap;gap:12px 16px}
-  .hero .jump{position:absolute;top:168px;left:0;right:0}
+  .hero .jump{position:absolute;top:168px;left:0;right:0;max-width:none}
   .block{padding:56px 0 24px}
   .sec-head{padding:0 24px 20px;flex-direction:column;align-items:flex-start;gap:8px}
   .sec-head h2{font-size:34px}
@@ -372,6 +375,8 @@ dialog.about::backdrop{background:0 0}
   .panel h2{font-size:38px}
   .experience li{grid-template-columns:84px 1fr auto;gap:12px;font-size:14px}
 }
+/* narrowest phones: the nav takes a third row */
+@media (max-width:359px){.badge{top:270px}}
 </style>
 </head>
 <body>
